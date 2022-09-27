@@ -2,18 +2,16 @@
 ## 1. 문제
 ***
 ### 원하는 것
-a,b의 내적을 return하는 함수를 완성하라.
+어떤 정수들이 있습니다. 이 정수들의 절댓값을 차례대로 담은 정수 배열 absolutes와 이 정수들의 부호를 차례대로 담은 불리언 배열 signs가 매개변수로 주어집니다. 실제 정수들의 합을 구하여 return 하도록 solution 함수를 완성
 
 ### 조건
-a,b 1차원 정수배열은 길이가 같다.
-a,b의 내적은 a[0]*b[0] + a[1]*b[1] + ... + a[n-1]*b[n-1]이다.
-(n은 a,b의 길이)
+
 
 ## 2. 계획
 ***
-a,b 배열의 길이가 같은 것을 이용한다.
-길이만큼 for문을 돌려서 answer += a[i]*b[i] 되게 한다.
-
+1/ absolutes 를 맵으로 전개하여, number, i 
+=> signs[i] === false 라면 sum = sum - number
+=> signs[i] === true 라면 sum = sum + number
 
 ## 3. 실행
 ***
@@ -21,4 +19,4 @@ a,b 배열의 길이가 같은 것을 이용한다.
 ***
 ## Sources
 ***
-https://programmers.co.kr/learn/courses/30/lessons/70128
+https://school.programmers.co.kr/learn/courses/30/lessons/76501
