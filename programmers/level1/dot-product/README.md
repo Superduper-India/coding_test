@@ -1,18 +1,17 @@
-# 음양 더하기
+# 내적
 ## 1. 문제
 ***
 ### 원하는 것
-실제 정수들의 합을 구하여 return하도록 함수를 완성하라.
+길이가 같은 두 1차원 정수 배열 a, b가 매개변수로 주어집니다. a와 b의 내적을 return 하도록 solution 함수를 완성
 
 ### 조건
-* absolutes는 정수들의 절댓값을 차례대로 담은 배열이다.
-* signs는 이 정수들의 부호를 차례대로 담은 불리언 배열이다.
+* a와 b의 내적은 a[0]*b[0] + a[1]*b[1] + ... + a[n-1]*b[n-1] 입니다. (n은 a, b의 길이)
 
 ## 2. 계획
 ***
-* absolutes와 sings의 인덱스 값을 활용한다.
-* sings를 for문으로 돌려서 false일경우 => 해당 i를 매개변수로 받는 sumNegative함수에서 absolutes[index]을 찾아서 -를 붙여준다(?)
-이하 동문
+1/ a.map((n, i)=> {
+  sum = sum + n[i]*b[i];
+});
 
 ## 3. 실행
 ***
@@ -20,4 +19,4 @@
 ***
 ## Sources
 ***
-https://programmers.co.kr/learn/courses/30/lessons/76501
+https://school.programmers.co.kr/learn/courses/30/lessons/70128
