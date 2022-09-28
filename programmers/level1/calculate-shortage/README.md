@@ -12,9 +12,9 @@
 * 금액이 부족하지 않으면 0을 return.
 
 ## 2. 계획
-1/ count 만큼 반복문을 돌려서 price*i = totalPrice 할당
-2/ totalPrice-money > 0 // answer = totalPrice-money
-3/ totalPrice-money <= 0 // answer = 0 
+1/ needPrice를 먼저 구한다. 반복문은 1부터 시작해서 count보다 작다.<br/>
+2/ needPrice-money 를 리턴한다. <br/>
+3/ 금액이 부족하지 않으면 0을 리턴한다 <= 의 조건을 추가한다.
 
 ## 3. 실행
 ***

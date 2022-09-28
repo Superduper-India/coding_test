@@ -1,20 +1,13 @@
 function solution(price, money, count) {
-  let answer = 0;
-  let totalPrice = 0;
+  let needPrice = 0;
+  let number = 1;
 
-  for (let i = 1; i <= count; i++) {
-    totalPrice += price * i;
+  while (number <= count) {
+    needPrice = needPrice + price * number;
+    number += 1;
   }
 
-  const change = totalPrice - money;
-
-  if (change > 0) {
-    answer = change;
-  } else if (change <= 0) {
-    answer;
-  }
-
-  return answer;
+  return needPrice <= money ? 0 : needPrice - money;
 }
 
 test("run", () => {
