@@ -8,12 +8,10 @@
 두 정수 left와 right가 매개변수로 주어집니다. left부터 right까지의 모든 수들 중 약수구하기
 
 ## 2. 계획
-left가 13, right가 17일 때, 13~17까지의 모든 수들 중..이니까
-for(let i = 1; i <= right-left; i++) 하고,
-let number = left+i 가 약수 찾기 원하는 수가 된다.
-let index = 1, let newArr = []지정해준다.
-그 이후 약수구하는 식 작성하고, 모든 약수를 []에 푸쉬, 길이를 구한다.
-길이가 짝수면 += number, 홀수면 -= number 해준다.
+1/ left~right 까지의 약수의 개수를 각각 세기 위해서 countArr을 설정한다. </br>
+2/ left~right 까지의 숫자를 돌리는 while반복문을 만든다. </br>
+3/ number를 인수로 getDivisor함수를 호출한다. (함수에서 약수구하기) </br>
+4/ count, targetNumber를 인수로 carculator함수를 호출한다. (count가 짝수면 +, 홀수면 - 붙여서 결과값 구하기) </br>
 
 ## 3. 실행
 ***
