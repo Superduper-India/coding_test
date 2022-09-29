@@ -1,14 +1,11 @@
 function solution(arr) {
   const answer = [];
 
-  while (arr.length) {
-    if (answer[answer.length - 1] != arr[0]) {
-      answer.push(arr[0]);
-      arr.shift();
-    } else if (answer[answer.length - 1] == arr[0]) {
-      arr.shift();
+  arr.forEach((number, index) => {
+    if (number !== arr[index + 1]) {
+      answer.push(number);
     }
-  }
+  });
 
   return answer;
 }
