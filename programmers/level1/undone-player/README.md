@@ -10,11 +10,6 @@
 * 완주한 선수들의 이름이 담긴 배열 donePlayer
 
 ## 2. 계획
-0/ participant, donePlayer 배열을 각각 오름차순 정렬한다.
-1/ participant에 donePlayer에 해당되지 않는 선수이름을 return하거나
-=> participant를 맵으로 돌려서 !donePlayer.includes(n)되는지 확인하고, 해당되면 n을 리턴한다.
-2/ participant에서 복수지만 donePlayer에서 단수인 선수가 있으면 그 선수이름을 return한다.
-=> participant.filter((n, i, arr) => arr.indexOf(n) !== i));
 
 ## 3. 실행
 ***
