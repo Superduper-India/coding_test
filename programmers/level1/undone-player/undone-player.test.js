@@ -1,26 +1,8 @@
-// function solution(participant, donePlayer) {
-//   participant.sort();
-//   donePlayer.sort();
-//   let answer;
-
-//   participant.forEach((a, index) => {
-//     if (participant[index] !== donePlayer[index]) {
-//       answer = participant[index - 1];
-//     }
-//   });
-
-//   return answer;
-// }
-
-function solution(participant, donePlayer) {
+function solution(participant, completion) {
   participant.sort();
-  donePlayer.sort();
-  const len = participant.length;
-
-  for (let i = 0; i < len; i++) {
-    if (participant[i] !== donePlayer[i]) {
-      return participant[i];
-    }
+  completion.sort();
+  for (let i = 0; i < participant.length; i++) {
+    if (participant[i] !== completion[i]) return participant[i];
   }
 }
 
