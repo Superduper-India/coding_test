@@ -1,16 +1,13 @@
 function solution(numbers) {
-  const len = numbers.length;
-  const set = new Set();
+  const arr = [];
 
-  for (let i = 0; i < len; i++) {
-    for (let j = 1; j < len; j++) {
-      if (i !== j) {
-        set.add(numbers[i] + numbers[j]);
-      }
+  numbers.forEach((n, index) => {
+    for (let i = index + 1; i < numbers.length; i++) {
+      arr.push(n + numbers[i]);
     }
-  }
+  });
 
-  return [...set].sort((a, b) => a - b);
+  return [...new Set(arr)].sort((a, b) => a - b);
 }
 
 test("run", () => {
