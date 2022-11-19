@@ -1,13 +1,15 @@
 function solution(arr) {
-  const answer = [];
+  // solution1
+  // const answer = [];
 
-  arr.forEach((number, index) => {
-    if (number !== arr[index + 1]) {
-      answer.push(number);
-    }
-  });
+  // for (let i = 0; i < arr.length; i++) {
+  //   if (arr[i] !== arr[i + 1]) answer.push(arr[i]);
+  // }
 
-  return answer;
+  // return answer;
+
+  // solution2
+  return arr.filter((num, i) => num !== arr[i + 1]);
 }
 
 test("run", () => {
