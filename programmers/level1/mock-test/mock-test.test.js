@@ -1,59 +1,35 @@
+const makeRepeat = (dicAnswer) => {
+  const repeatCount = Math.ceil(dicAnswer.length / 5);
+  return new Array(repeatCount).fill(dicAnswer).flat();
+};
+
+const setCorrectCount = (value, answers) => {
+  return value.filter((n, i) => n === answers[i]).length;
+};
+
 function solution(answers) {
-  const a = [1, 2, 3, 4, 5];
-  const b = [2, 1, 2, 3, 2, 4, 2, 5];
-  const c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
+  const finalAnswer = [];
+  const dicAnswers = [
+    [1, 2, 3, 4, 5],
+    [2, 1, 2, 3, 2, 4, 2, 5],
+    [3, 3, 1, 1, 2, 2, 4, 4, 5, 5],
+  ];
 
-  const count = [0, 0, 0];
-
-  answers.map((answer, i) => {
-    if (answer === a[i % 5]) {
-      count[0]++;
-    }
-    if (answer === b[i % 8]) {
-      count[1]++;
-    }
-    if (answer === c[i % 10]) {
-      count[2]++;
-    }
+  const newDicAnswer = dicAnswers.map(dicAnswer => {
+    return makeRepeat(dicAnswer);
   });
 
-  const maxNumber = Math.max(...count);
-
-  let answer = [];
-  count.map((c, i) => {
-    if (c === maxNumber) {
-      answer.push(i + 1);
-    }
+  const correctCount = newDicAnswer.map(arr => {
+    return setCorrectCount(arr, answers);
   });
 
-  return answer;
-  // numbers.forEach((number) => {
-  //   number.forEach((n, i) => {
-  //     if (answers[i] === n) {
-  //       count++;
-  //     }
-  //   });
+  const maxNum = Math.max(...correctCount); // 맞춘 수 중 최댓값 구하기
 
-  //   countCorrect.push(count);
-  //   count = 0;
-  // });
+  correctCount.forEach((n, i) => {
+    if (n === maxNum) finalAnswer.push(i + 1);
+  });
 
-  // let index = 0;
-  // let beforeCount = 0;
-  // const answer = [];
-  // for (const currentCount of countCorrect) {
-  //   if (beforeCount < currentCount) {
-  //     beforeCount = currentCount;
-  //     index++;
-  //   } else if (beforeCount === currentCount) {
-  //     beforeCount = currentCount;
-  //     answer.push(index);
-  //     index++;
-  //   }
-  // }
-
-  // answer.push(index);
-  // return answer;
+  return finalAnswer.sort();
 }
 
 test("solution", () => {
