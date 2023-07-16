@@ -1,19 +1,18 @@
 const solution = (arrA, arrB) => {
-  // 나의 풀이
-  // if (arrA.length == 1) {
-  //   return arrA[0] * arrB[0];
-  // }
-  // const minNum = Math.min(...arrA);
-  // arrA.splice(arrA.indexOf(minNum), 1);
-  // const maxNum = Math.max(...arrB);
-  // arrB.splice(arrB.indexOf(maxNum), 1);
-  // return minNum * maxNum + solution(arrA, arrB);
   let sum = 0;
-  arrA.sort((a, b) => b - a);
-  arrB.sort((a, b) => a - b);
+  // 오름차순 정렬
+  const ascending = arrA.sort((a, b) => {
+    return a - b;
+  });
+  // 내림차순 정렬
+  const descending = arrB.sort((a, b) => {
+    return b - a;
+  });
+
   arrA.forEach((num, index) => {
     sum = sum + num * arrB[index];
   });
+
   return sum;
 };
 
