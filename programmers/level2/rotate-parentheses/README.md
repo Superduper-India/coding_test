@@ -1,4 +1,4 @@
-# 괄호 회전하기
+# ❌ 괄호 회전하기
 
 ## 1. 문제
 
@@ -19,18 +19,11 @@
 
 ## 2. 계획
 
+- s를 0,1,2,3,...,s.length-1만큼 반복문으로 돌린다.
 - 2개의 함수를 작성: 올바른 문자열인지 확인하는 함수(checkTheCorrect), 문자열을 왼쩍으로 1개씩 이동하는 함수(makeRotation)
-- makeRotation:
-  ```
-  const makeRotation = (string) => {
-    return string.substring(1, string.length) + string[0]
-  }
-  makeRotation(s);
-  ```
-- checkTheCorrect:
-  ```
-  const parentheses = [ ["[", "]"], "(": ")", "{": "}" ]
-  ```
+- 먼저 makeRotation에 s을 인자로 전달해서 호출한 뒤 이동한 string을 변수에 할당한다. 이것을 checkTheCorrect함수에 매개변수로 전달한다.
+- checkTheCorrect함수는 true or false를 리턴한다.
+- true일때 count값을 1씩 증감시킨다.
 
 ## 3. 실행
 
