@@ -10,14 +10,7 @@
 
 ### 조건
 
-- 한 상자에 담으려는 귤의 개수 k개
-- 귤의 크기를 담은 배열 tangerine
-
 ## 2. 계획
-
-- tangerine배열에서 각요소의 중복개수를 각각 구한다.
-- box배열을 순회해서 정렬된 tangerine배열의 값을 하나씩 푸쉬해준다.
-- box배열에서 중복값을 제거한 배열의 길이를 리턴한다.
 
 ## 3. 실행
 
@@ -35,4 +28,4 @@
 
 ---
 
-https://school.programmers.co.kr/learn/courses/30/lessons/155651
+https://school.programmers.co.kr/learn/courses/30/lessons/138476
