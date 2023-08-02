@@ -1,20 +1,37 @@
 function solution(toppings) {
-  const len = toppings.length;
   let count = 0;
 
-  for (let i = 0; i < len - 1; i++) {
-    // 1. 배열의 순서를 정돈하지 않은 상태에서 배열을 순회하면서 각각의 위치에서 자른다.
-    let tempArr1;
-    let tempArr2;
-    // 2. filter메서드로 중복값을 제거한다.
-    tempArr1 = toppings
-      .slice(0, i + 1)
-      .filter((item, i, arr) => arr.indexOf(item) === i);
-    tempArr2 = toppings
-      .slice(i + 1, len)
-      .filter((item, i, arr) => arr.indexOf(item) === i);
-    // 3. 각 배열의 길이를 비교해서 같으면 count를 증가시킨다.
-    if (tempArr1.length === tempArr2.length) count++;
+  const allToppings = new Map();
+  const brother = new Map();
+
+  toppings.forEach((item) => {
+    // Map 자료구조에 각 토핑의 개수가 몇개인지 넣어준다.
+    // {1 => 4, 2 => 2, 3 => 1, 4 => 1}
+    allToppings.set(item, (allToppings.get(item) || 0) + 1);
+  });
+
+  for (const item of toppings) {
+    // 토핑을 하나씩 확인하면서 (케익을 1부터 자르는 것)
+    // allToppings의 목록을 하나씩 빼준다.
+    allToppings.set(item, allToppings.get(item) - 1);
+
+    // bro에는 토핑의 개수가 중요한게 아니라 토핑의 종류가 중요하므로
+    // 들어온 토핑의 종류와 true를 넣어준다.
+    brother.set(item, true);
+
+    // allToppings의 토핑이 0이되면 그 토핑 항목을 지워준다.
+    if (!allToppings.get(item)) {
+      allToppings.delete(item);
+    }
+
+    // allToppings의 크기와 brother의 크기가 같으면
+    // 형과 동생이 같은 종류의 토핑을 들고있는 것이기에
+    // count를 1씩 증가시켜준다.
+    if (allToppings.size === brother.size) count++;
+
+    // 동생이 가진 토핑 종류가 많아지면 더 이상 케익을 잘라도 동생의 토핑 개수만 증가하는 것
+    // 때문에 break문으로 반복문을 종료시킨다.
+    if (allToppings.size < brother.size) break;
   }
 
   return count;
