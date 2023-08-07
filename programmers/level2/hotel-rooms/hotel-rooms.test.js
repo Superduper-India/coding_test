@@ -1,23 +1,23 @@
-// "HH:MM"을 분단위로 바꿔주는 로직
-const makeMinStamp = (time) => {
-  const [hour, min] = time.split(":").map((v) => Number(v));
-  return hour * 60 + min;
+// 인수로 전달받는 "HH:MM"문자열에 대하여 분단위로 변환해주는 convertTimeToMinutes함수.
+const convertTimeToMinutes = (timeString) => {
+  // "HH:MM" => HH(number) MM(number)로 변환
+  const [hours, minutes] = timeString.split(":").map(Number);
+  const totalMinutes = hours * 60 + minutes;
+  return totalMinutes;
 };
 
 const solution = (book_time) => {
-  // "23:59"인 이유는 예약시간이 자정을 넘어가는 경우는 없기 때문에
-  // 10을 더하는 이유는 10분간 청소를 해야하기 때문에
-  const timeArr = Array.from({ length: makeMinStamp("23:59") + 10 }, () => 0);
+  const timeArr = Array.from({
+    length: convertTimeToMinutes("23:59") + 10,
+  }).fill(0);
 
-  book_time.forEach(([startTime, endTime]) => {
-    // 대실 시작 시간을 분단위로
-    let start = makeMinStamp(startTime);
-    // 대실 종료 시간을 분단위로
-    // 왜 +9를 하는거지? (이것도 청소를 해야해서??)
-    const end = makeMinStamp(endTime) + 9;
+  book_time.forEach(([start, end]) => {
+    let startMin = convertTimeToMinutes(start);
+    // 청소 시간을 고려하여 9를 더한다.
+    const endMin = convertTimeToMinutes(end) + 9;
 
-    for (start; start <= end; start++) {
-      timeArr[start]++;
+    for (startMin; startMin <= endMin; startMin++) {
+      timeArr[startMin]++;
     }
   });
 
@@ -25,26 +25,26 @@ const solution = (book_time) => {
 };
 
 test("run", () => {
-  // expect(
-  //   solution([
-  //     ["15:00", "17:00"],
-  //     ["16:40", "18:20"],
-  //     ["14:20", "15:20"],
-  //     ["14:10", "19:20"],
-  //     ["18:20", "21:20"],
-  //   ])
-  // ).toBe(3);
+  expect(
+    solution([
+      ["15:00", "17:00"],
+      ["16:40", "18:20"],
+      ["14:20", "15:20"],
+      ["14:10", "19:20"],
+      ["18:20", "21:20"],
+    ])
+  ).toBe(3);
   expect(
     solution([
       ["09:10", "10:10"],
       ["10:20", "12:20"],
     ])
   ).toBe(1);
-  // expect(
-  //   solution([
-  //     ["10:20", "12:30"],
-  //     ["10:20", "12:30"],
-  //     ["10:20", "12:30"],
-  //   ])
-  // ).toBe(3);
+  expect(
+    solution([
+      ["10:20", "12:30"],
+      ["10:20", "12:30"],
+      ["10:20", "12:30"],
+    ])
+  ).toBe(3);
 });
