@@ -1,35 +1,27 @@
-const checkTheCorrection = (string) => {
-  const tempArr = [];
-  let result;
-
-  for (let i = 0; i < string.length; i += 2) {
-    tempArr.push([string[i], string[i + 1]]);
-  }
-
-  tempArr.forEach(([left, right]) => {
-    if (
-      (left === "[" && right === "]") ||
-      (left === "(" && right === ")") ||
-      (left === "{" && right === "}")
-    )
-      result = true;
-    else result = false;
-  });
-
-  return result;
-};
-
-const rotation = (string) => {
-  return string.substring(1) + string[0];
-};
-
 const solution = (s) => {
+  const stack = [];
   let count = 0;
+  let isRight = true;
+  // s의 길이가 홀수면 올바른 괄호 문자열이 될 수 없다.
+  if (s.length % 2 === 1) return 0;
 
-  // 0부터 5까지 반복문으로 돌리기
   for (let i = 0; i < s.length; i++) {
-    s = rotation(s);
-    console.log(checkTheCorrection(s));
+    let temp = s.slice(i) + s.slice(0, i);
+    isRight = true;
+    for (const letter of temp) {
+      if (letter === "(" || letter === "{" || letter === "[")
+        stack.push(letter);
+      else {
+        let leftWord = stack.pop();
+        if (leftWord === "(" && letter === ")") continue;
+        if (leftWord === "{" && letter === "}") continue;
+        if (leftWord === "[" && letter === "]") continue;
+        isRight = false;
+        break;
+      }
+    }
+
+    if (isRight) count++;
   }
 
   return count;
