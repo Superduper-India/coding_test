@@ -1,27 +1,33 @@
 const solution = (weights) => {
-  let tempMap = new Map();
-  let matesMap = new Map();
+  let count = 0;
+  const store = {}; // key-value의 형태로 여기에 저장한다.
+  // 경우의 수 => 1, 1.5, 2, 1.33...
+  const cases = [1, 3 / 2, 4 / 2, 4 / 3];
 
-  // 100, 180, 360, 100, 270 각 요소들을 순회하며 해당 요소의 짝꿍이 될 수 있는 요소가 있는지 확인한다.
-  weights.forEach((myWeight, i) => {
-    // temp맵의 각 값들을 배열에 담아준다. => 현재 요소의 짝꿍이 될 수 있는 조건이다.
-    const condition = [
-      tempMap.get(myWeight * 2),
-      tempMap.get(myWeight * 3),
-      tempMap.get(myWeight * 4),
-    ];
-    condition.forEach((yourWeight, j) => {
-      // temp맵의 각 값들을 담은 배열의 요소가 undefind면 temp맵에 현재 인덱스 값을 담아준다.
-      if (!yourWeight) {
-        tempMap.set(myWeight * (j + 2), [i]);
-      } else {
-        yourWeight.forEach((weight) => {
-          // 이전에 없던 시소 짝꿍인 경우
-          console.log(matesMap.get(yourWeight[weight]));
-        });
-      }
+  // weights배열을 내림차순으로 정렬하고 반복문으로 돌리기
+  weights
+    .sort((a, b) => b - a)
+    .forEach((w) => {
+      let key;
+      cases.forEach((c) => {
+        key = w * c; // 현재 무게와 경우의 수의 비율을 곱한 값
+        console.log(">>>key", key);
+        console.log(">>>store", store);
+        // 위의 값이 store객체에 존재하는 경우
+        if (store[key]) {
+          count += store[key];
+        }
+      });
+      // store객체에 100, 180, 360, 100, 270 값들을 key값으로 가지고 있지 않은경우,
+      if (!store[w]) store[w] = 1;
+      // store객체에 100, 180... 이하 생략 값들을 key값으로 가지고 있는 경우,
+      else store[w]++;
+
+      // store { '100': 2, '180': 1, '270': 1, '360': 1 }
+      // console.log("store", store);
     });
-  });
+
+  console.log(count);
 };
 
 test("run", () => {
