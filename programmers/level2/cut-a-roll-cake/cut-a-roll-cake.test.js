@@ -1,40 +1,72 @@
 function solution(toppings) {
-  let count = 0;
-
-  const allToppings = new Map();
-  const brother = new Map();
-
-  toppings.forEach((item) => {
-    // Map 자료구조에 각 토핑의 개수가 몇개인지 넣어준다.
-    // {1 => 4, 2 => 2, 3 => 1, 4 => 1}
-    allToppings.set(item, (allToppings.get(item) || 0) + 1);
+  let answer = 0;
+  const mine = new Map();
+  const yours = new Map();
+  // 내 토핑에 해당하는 애들을 만든다
+  // { 1 => 4, 2 => 2, 3 => 1, 4 => 1 }
+  toppings.forEach((topping) => {
+    if (mine.get(topping) === undefined) {
+      mine.set(topping, 1);
+    } else {
+      mine.set(topping, mine.get(topping) + 1);
+    }
   });
 
-  for (const item of toppings) {
-    // 토핑을 하나씩 확인하면서 (케익을 1부터 자르는 것)
-    // allToppings의 목록을 하나씩 빼준다.
-    allToppings.set(item, allToppings.get(item) - 1);
+  // 시도2 => 기존 문제풀이 참고
+  for (const kind of toppings) {
+    // console.log("kind:", kind);
+    // 1. 내 토핑에서 지금 토핑의 종류에 해당하는 개수 -1
+    mine.set(kind, mine.get(kind) - 1);
+    // 2. 너의 토핑에서 지금 토핑의 종류에 해당하는 개수 +1
+    yours.set(kind, true);
+    // if (yours.get(kind) === undefined) {
+    //   yours.set(kind, 1);
+    // } else {
+    //   yours.set(kind, yours.get(kind) + 1);
+    // }
+    // console.log("yours:", yours);
 
-    // bro에는 토핑의 개수가 중요한게 아니라 토핑의 종류가 중요하므로
-    // 들어온 토핑의 종류와 true를 넣어준다.
-    brother.set(item, true);
+    // 3. 남은 토핑이 더이상 없으면 토핑의 종류 삭제
+    if (mine.get(kind) === 0) mine.delete(kind);
+    // console.log("mine:", mine);
 
-    // allToppings의 토핑이 0이되면 그 토핑 항목을 지워준다.
-    if (!allToppings.get(item)) {
-      allToppings.delete(item);
-    }
-
-    // allToppings의 크기와 brother의 크기가 같으면
-    // 형과 동생이 같은 종류의 토핑을 들고있는 것이기에
-    // count를 1씩 증가시켜준다.
-    if (allToppings.size === brother.size) count++;
-
-    // 동생이 가진 토핑 종류가 많아지면 더 이상 케익을 잘라도 동생의 토핑 개수만 증가하는 것
-    // 때문에 break문으로 반복문을 종료시킨다.
-    if (allToppings.size < brother.size) break;
+    // 4. mine과 yours객체의 사이즈를 각각 확인해서 사이즈가 같으면 answer++
+    // console.log("mine.size:", mine.size);
+    // console.log("yours.size:", yours.size);
+    if (mine.size === yours.size) answer++;
   }
 
-  return count;
+  // 시도1
+  // for (let i = 0; i < toppings.length; i++) {
+  //   for (const topping of mine) {
+  //     const [kind, count] = topping;
+  //     // 남은 토핑의 종류
+  //     // console.log("kind:", kind);
+  //     // 남은 토핑의 개수
+  //     // console.log("count:", count);
+
+  //     // 1. 내 토핑에서 지금 토핑의 종류에 해당하는 개수 -1
+  //     mine.set(kind, mine.get(kind) - 1);
+  //     // 2. 너의 토핑에서 지금 토핑의 종류에 해당하는 개수 +1
+  //     yours.set(kind, true);
+  //     // if (yours.get(kind) === undefined) {
+  //     //   yours.set(kind, 1);
+  //     // } else {
+  //     //   yours.set(kind, yours.get(kind) + 1);
+  //     // }
+  //     // console.log("yours:", yours);
+
+  //     // 3. 남은 토핑이 더이상 없으면 토핑의 종류 삭제
+  //     if (mine.get(kind) === 0) mine.delete(kind);
+  //     // console.log("mine:", mine);
+
+  //     // 4. mine과 yours객체의 사이즈를 각각 확인해서 사이즈가 같으면 answer++
+  //     console.log("mine.size:", mine.size);
+  //     console.log("yours.size:", yours.size);
+  //     if (mine.size === yours.size) answer++;
+  //   }
+  // }
+  return answer;
 }
 
 test("run", () => {
