@@ -1,11 +1,13 @@
 const solution = (s) => {
-  // toDo 배열로 풀지말고 스택으로 풀어라
-  const stack = [];
-  for (let i = 0; i < s.length; i++) {
-    // 지금 인덱스와 다음 인덱스의 문자가 일치하면 stack배열에서 pop(제거)한다.
-    // 지금 인덱스와 다음 인덱스의 문자가 일치하지 않으면 stack배열에 push(추가)한다.
-    if (!stack.length || stack[stack.length - 1] !== s[i]) stack.push(s[i]);
-    else stack.pop();
+  // 테스트 통과 x
+  let stack = [];
+  for (let i = 1; i <= s.length; i++) {
+    // 스택 배열이 빈배열이면, 요소 채워주기
+    if (!stack[stack.length - 1]) stack.push(s[i - 1]);
+    else {
+      if (stack[stack.length - 1] !== s[i - 1]) stack.push(s[i - 1]);
+      else stack = [];
+    }
   }
 
   return stack.length ? 0 : 1;
