@@ -17,7 +17,7 @@
 ## 2. 계획
 
 - i는 1부터 문자열의 길이까지 반복문을 돌린다.
-- i-1과 i의 요소가 있을때, stack[stack.length-1] !== strArr[i-1]이면, stack.push(strArr[i-1])해주고 아니면 스택을 비워준다.
+- i-1과 i의 요소가 있을때, stack[stack.length-1] !== strArr[i-1]이면, stack.push(strArr[i-1])해주고 아니면 스택을 pop해준다.
 - 위 과정을 반복
 
 ## 3. 실행
