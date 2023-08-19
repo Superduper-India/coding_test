@@ -13,18 +13,17 @@ const solution = (k, tangerine) => {
   all = Array.from(all).sort((a, b) => b[1] - a[1]);
 
   for (const [_, n] of all) {
-    // 3. 가짓수가 k이상이면 1을 리턴한다.
-    if (n > k) return 1;
     answer++;
     boxCount = boxCount + n;
     // 박스에 담긴 귤의 갯수가 k가 되면 반복문을 빠져나온다.
-    if (boxCount === k) break;
+    // 어차피 boxCount가 n의 개수를 누적시킨 것이므로, 1번째 누적때 k이상이면 반복문을 빠져나온다.
+    if (boxCount >= k) break;
   }
 
   return answer;
 };
 
-test("run", () => {
+test('run', () => {
   expect(solution(6, [1, 3, 2, 5, 4, 5, 2, 3])).toBe(3);
   expect(solution(4, [1, 3, 2, 5, 4, 5, 2, 3])).toBe(2);
   expect(solution(2, [1, 1, 1, 1, 2, 2, 2, 3])).toBe(1);
