@@ -8,20 +8,26 @@
 // [1,2,3]이 있을때, 1을 2로 나누어 떨어지지 않는다. 하지만 2를 곱하면 나누어 떨어진다. 다음으로 넘어간다. 2를 3으로 나누어 떨어지지 않는다. ... 3을 곱하면 나누어 떨어진다 업데이트 해준다.
 
 const solution = (arr) => {
-  const lastI = arr.length - 1;
-  let i = 2;
+  let n = 1;
+  let flag = false;
 
-  // 6 => 24 => 168
-  // console.log((8 * 21) % 14);
-
-  while ((arr[lastI - 1] * i) % arr[lastI]) {
-    // 가장 마지막 두 숫자만을 비교해준다.
-    // 연산의 결과가 0이면 반복문을 빠져나온다.
-    // 0이 아니면 i를 증감하고 계속해서 반복한다.
-    i++;
+  // flag가 false면 계속하기
+  while (!flag) {
+    // 숫자를 증가시킨다
+    n++;
+    for (let i = 0; i < arr.length; i++) {
+      // 모든 숫자가 0으로 나누어 떨어지면 큰 반복문 탈출
+      if (n % arr[i] === 0) flag = true;
+      else {
+        // 모든 숫자 중에 하나라도 0으로 나누어 떨어지지 않으면 작은 반복문 탈출
+        // n증가시키고 큰 반복문 계속
+        flag = false;
+        break;
+      }
+    }
   }
 
-  return arr[lastI - 1] * i;
+  return n;
 };
 
 test('run', () => {
