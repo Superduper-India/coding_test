@@ -8,6 +8,9 @@
 // - 길이가 1: 0 / 1 / 2 / 3 / 4
 // - 길이가 2: 0,1 / 1,2 / 2,3 / 3,4 / 4,0
 // - 길이가 3: 0,1,2 / 1,2,3 / 2,3,4 / 3,4,0 / 4,0,1
+// 실패 => 시간 초과
+// 슬라이딩 윈도우 알고리즘 활용. 기존 알고리즘이 O(NW)의 복잡도를 가진다면, 슬라이딩 윈도우 알고리즘은 O(N)의 시간 복잡도를 가진다.
+// 현재의 숫자에서 지나간 숫자는 빼주고, 들어온 숫자는 더해준다.
 
 // 길이가 n인 연속 수열의 합을 구하는 로직
 const sumSequence = (arr) => {
@@ -21,30 +24,33 @@ const sumSequence = (arr) => {
 };
 
 const solution = (elements) => {
-  const answer = [];
-
-  // 1. elements를 최대 5배로 늘린 재료 어레이.
-  const temp = Array(elements.length).fill(elements).flat();
+  const set = new Set();
 
   for (let i = 1; i <= elements.length; i++) {
+    // n길이의 최초의 윈도우에 대한 합을 구해주는 로직
+    let sumSeq = sumSequence(elements.slice(0, i));
+
     elements.forEach((_, j) => {
-      answer.push(sumSequence(temp.slice(j, j + i)));
+      if (j === 0) {
+        // 최초의 윈도우만 아묻따 추가해준다.
+        set.add(sumSeq);
+      } else {
+        // 이후의 윈도우에서는 이전에 구한 합을 활용한다.
+        sumSeq = sumSeq - elements[j - 1];
+        // toDo 아래 인덱스 직접 계산해보기
+        // j => 1,2,3,4 반복
+        // console.log('j', j);
+        // i => 1,1,1,1 => 2,2,2,2 ...
+        // console.log('i', i);
+        // elements.length => 5
+        // console.log('(j + i - 1) % elements.length', (j + i - 1) % elements.length);
+        sumSeq = sumSeq + elements[(j + i - 1) % elements.length];
+      }
+      set.add(sumSeq);
     });
   }
-  // console.log('===절취선===');
-  // console.log(elements.slice(0, 1)); // +1만큼
-  // console.log(elements.slice(1, 2));
-  // console.log(elements.slice(2, 3));
-  // console.log(elements.slice(3, 4));
-  // console.log(elements.slice(4, 5));
 
-  // console.log(elements.slice(0, 2)); // +2만큼
-  // console.log(elements.slice(1, 3));
-  // console.log(elements.slice(2, 4));
-  // console.log(elements.slice(3, 5));
-  // console.log(elements.slice(4, 6));
-
-  return answer.filter((n, i, arr) => arr.indexOf(n) === i).length;
+  return [...set].length;
 };
 
 test('run', () => {
