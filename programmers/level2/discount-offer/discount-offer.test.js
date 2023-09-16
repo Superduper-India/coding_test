@@ -7,27 +7,32 @@
 // - 제품과 수량이 할인하는 날짜와 10일 연속으로 일치할 경우에 맞춰 회원가입 한다.
 
 const solution = (want, number, discount) => {
-  const answer = [];
-
-  // 항목과 개수를 가지고 새로운 맵 객체를 만든다.
-  const map = new Map();
-  want.forEach((w, i) => {
-    if (!map.get(w)) map.set(w, number[i]);
-  });
-  console.log('dsdasdasd', map);
-
+  let answer = 0;
   // 마지막 할인 가능일자
   const lastDayToDiscount = discount.length - 9;
+
+  const isMatch = (condition) => {
+    // 항목과 개수를 가지고 새로운 맵 객체를 만든다.
+    const map = new Map();
+    condition.forEach((c) => {
+      map.set(c, (map.get(c) || 0) + 1);
+    });
+
+    for (let i = 0; i < number.length; i++) {
+      if (map.get(want[i]) !== number[i]) return false;
+    }
+
+    return true;
+  };
 
   // 할인 시작일에 대한 반복문
   for (let i = 0; i < lastDayToDiscount; i++) {
     // 구매항목의 조건을 확인해야 하는 범위
     const condition = discount.slice(i, i + 10);
-    console.log('condition', condition);
-    // 조건이 일치하면 answer에 i푸쉬하기
+    isMatch(condition) && answer++;
   }
 
-  // return answer.length;
+  return answer;
 };
 
 test('run', () => {
