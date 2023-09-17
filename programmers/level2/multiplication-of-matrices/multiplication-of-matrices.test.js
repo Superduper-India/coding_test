@@ -2,28 +2,32 @@
 // 2차원 행렬 arr1과 arr2를 입력받아, arr1에 arr2를 곱한 결과를 반환하는 함수, solution을 완성
 
 // 조건
-// 행렬의 곱셈을 하려면 1행렬의 열 개수와 2행렬의 행 개수가 동일해야한다.
-// 왜냐하면 반환값의 [0,0]에서 앞의 값은 1행렬의 0행 전부, 뒤의 값은 2행렬의 0열 전부를 곱한 후 더한 값과 같기 때문이다.
+// 곱할 수 있는 배열만 주어진다.
 
 const solution = (arr1, arr2) => {
   const answer = [];
 
-  // 행
-  for (let row = 0; row < arr1.length; row++) {
-    const result = [];
-    // 열
-    for (let column = 0; column < arr2[0].length; column++) {
-      let temp = 0;
-      for (let innerRow = 0; innerRow < arr1[0].length; innerRow++) {
-        temp += arr1[row][innerRow] * arr2[innerRow][column];
-        // console.log('row', row, 'column', column, 'innerRow', innerRow);
-      }
-      result.push(temp);
-    }
-    answer.push(result);
-  }
+  // arr1의 열과 arr2의 행의 개수가 일치한다.
+  // 즉, arr1의 각 행과 arr2의 각 열의 요소를 각각 곱해서 더해주어야한다.
 
-  // console.log('answer:', answer);
+  arr1.forEach((_, i) => {
+    const row = [];
+    // console.log(i); // 0,1,2
+    arr1[0].forEach((_, j) => {
+      let temp = 0;
+      // console.log(j); // i: 0 => 0,1, i: 1 => 0,1, i: 2 => 0,1
+      arr2.forEach((_, k) => {
+        // console.log(k); // j: 0 => 0,1, j: 1 => 0,1
+        const arr1Row = arr1[i][k];
+        const arr2Column = arr2[k][j];
+        temp += arr1Row * arr2Column;
+        // console.log('i', i, 'j', j, 'k', k);
+      });
+      row.push(temp);
+    });
+    answer.push(row);
+  });
+
   return answer;
 };
 
