@@ -6,22 +6,21 @@
 // 왜냐하면 반환값의 [0,0]에서 앞의 값은 1행렬의 0행 전부, 뒤의 값은 2행렬의 0열 전부를 곱한 후 더한 값과 같기 때문이다.
 
 const solution = (arr1, arr2) => {
-  let x = arr1[0].length > arr2[0].length ? arr1[0].length : arr2[0].length; // 열개수
-  let y = arr1.length > arr2.length ? arr1.length : arr2.length; // 행개수
-
-  const answer = Array.from({ length: y }).fill(Array.from({ length: x }).fill(0));
+  const answer = [];
 
   // 행
-  for (let row = 0; row < answer.length; row++) {
+  for (let row = 0; row < arr1.length; row++) {
+    const result = [];
     // 열
-    for (let column = 0; column < answer[0].length; column++) {
+    for (let column = 0; column < arr2[0].length; column++) {
       let temp = 0;
-      for (let innerRow = 0; innerRow < answer[0].length; innerRow++) {
+      for (let innerRow = 0; innerRow < arr1[0].length; innerRow++) {
         temp += arr1[row][innerRow] * arr2[innerRow][column];
         // console.log('row', row, 'column', column, 'innerRow', innerRow);
       }
-      answer[row][column] = temp;
+      result.push(temp);
     }
+    answer.push(result);
   }
 
   // console.log('answer:', answer);
