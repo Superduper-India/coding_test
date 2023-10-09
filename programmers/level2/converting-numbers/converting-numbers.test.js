@@ -8,28 +8,28 @@
 // x에 3을 곱합니다.
 
 const solution = (x, y, n) => {
-  let temp = y;
-  let answer = 0;
+  const dp = new Array(y + 1).fill(Infinity);
+  // x까지 도달하면 방법의 개수를 늘려야하므로 0을 할당
+  // (마치 answer=0으로 초기화 하듯이)
+  dp[x] = 0;
 
-  if (y - n == x || (!(temp % 2) && temp / 2 == x) || (!(temp % 3) && temp / 3 == x)) {
-    return 1;
-  } else {
-    while (true) {
-      if (temp == x) break;
-      // temp가 x와 같아질 때까지 반복문을 진행한다.
-      if (!(temp % 2)) {
-        if (temp / 2 < temp - n) temp = temp / 2;
-        else temp = temp - n;
-        answer++;
-      } else if (!(temp % 3)) {
-        if (temp / 3 < temp - n) temp = temp / 3;
-        else temp = temp - n;
-        answer++;
-      } else return -1;
+  for (let i = x; i <= y; i++) {
+    // x에 n를 더해서 i(y)보다 작거나 같아지는 경우,
+    if (x <= i - n) {
+      dp[i] = Math.min(dp[i], dp[i - n] + 1);
+      // dp[i] = dp[i - n] + 1;
     }
-
-    return answer;
+    if (i % 2 === 0 && x <= i / 2) {
+      dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+      // dp[i] = dp[i / 2] + 1;
+    }
+    if (i % 3 === 0 && x <= i / 3) {
+      dp[i] = Math.min(dp[i], dp[i / 3] + 1);
+      // dp[i] = dp[i / 3] + 1;
+    }
   }
+
+  return dp[y] === Infinity ? -1 : dp[y];
 };
 
 test('run', () => {
