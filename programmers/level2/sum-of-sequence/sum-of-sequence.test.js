@@ -7,42 +7,41 @@
 // 합이 k인 부분 수열이 여러 개인 경우 길이가 짧은 수열을 찾기
 // 길이가 짧은 수열이 여러 개인 경우 앞쪽(시작 인덱스가 작은)에 나오는 수열을 찾기
 
+// 실패 => 시간 초과
 const solution = (sequence, k) => {
+  const answer = [];
   let i = 0;
-  let temp = [];
-  let size = 0;
-  const answer = [0, sequence.length - 1];
+  let min = 0;
 
   while (i < sequence.length) {
     const map = new Map();
     let calc = 0;
+
     // 부분 수열의 합이 k를 만족하는 경우의 수를 모두 찾는다.
     for (let j = i; j < sequence.length; j++) {
       map.set(j, sequence[j]);
       calc = calc + sequence[j];
 
       if (calc === k) {
-        answer[0] = [...map][0][0];
-        answer[1] = [...map][[...map].length - 1][0];
+        if (!min || min > [...map].length) {
+          // 최소값이 0이거나 현재맵의 길이보다 클때, 현재 맵의 길이 할당
+          min = [...map].length;
+          answer[0] = [...map][0][0];
+          answer[1] = [...map][[...map].length - 1][0];
+        } else {
+          // 길이가 짧은 수열이 여러 개인 경우 앞쪽(시작 인덱스가 작은)에 나오는 수열을 찾기
+          // console.log(answer, [...map], [...map][0][0]);
+        }
       }
     }
     i++;
   }
 
   return answer;
-
-  // 이 중 길이가 가장 짧은 것을 찾는다.
-  // 길이가 동일하면 시작 인덱스가 작은 수열을 찾는다.
-  // const min = [];
-  // temp.forEach((map) => {
-  //   min.push(map.size);
-  // });
-  // const minNum = Math.min(...min);
-  // const dd = temp.filter((map) => map.size === minNum);
 };
 
 test('run', () => {
-  // expect(solution([1, 2, 3, 4, 5], 7)).toStrictEqual([2, 3]);
+  expect(solution([1, 2, 3, 4, 5], 7)).toStrictEqual([2, 3]);
   expect(solution([1, 1, 1, 2, 3, 4, 5], 5)).toStrictEqual([6, 6]);
   expect(solution([2, 2, 2, 2, 2], 6)).toStrictEqual([0, 2]);
 });
