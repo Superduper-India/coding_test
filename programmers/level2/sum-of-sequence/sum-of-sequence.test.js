@@ -7,37 +7,47 @@
 // 합이 k인 부분 수열이 여러 개인 경우 길이가 짧은 수열을 찾기
 // 길이가 짧은 수열이 여러 개인 경우 앞쪽(시작 인덱스가 작은)에 나오는 수열을 찾기
 
-// 실패 => 시간 초과
 const solution = (sequence, k) => {
-  const answer = [];
-  let i = 0;
-  let min = 0;
+  let answer = [];
+  // sequence의 누적계
+  let accu = 0;
+  // 시작 인덱스
+  let startI = 0;
 
-  while (i < sequence.length) {
-    const map = new Map();
-    let calc = 0;
+  for (let i = 0; i < sequence.length; i++) {
+    accu = accu + sequence[i];
 
-    // 부분 수열의 합이 k를 만족하는 경우의 수를 모두 찾는다.
-    for (let j = i; j < sequence.length; j++) {
-      map.set(j, sequence[j]);
-      calc = calc + sequence[j];
-
-      if (calc === k) {
-        if (!min || min > [...map].length) {
-          // 최소값이 0이거나 현재맵의 길이보다 클때, 현재 맵의 길이 할당
-          min = [...map].length;
-          answer[0] = [...map][0][0];
-          answer[1] = [...map][[...map].length - 1][0];
-        } else {
-          // 길이가 짧은 수열이 여러 개인 경우 앞쪽(시작 인덱스가 작은)에 나오는 수열을 찾기
-          // console.log(answer, [...map], [...map][0][0]);
-        }
+    if (accu > k) {
+      // sequence의 누적계가 k보다 크면 작아질때까지 이전값을들 빼줌
+      // 이렇게되면 i에 대한 값은 누적계에 더해져 있으므로 조건에 맞는 startI값만 알 수 있게된다
+      while (accu > k) {
+        accu = accu - sequence[startI++];
       }
     }
-    i++;
+
+    // sequence의 누적계가 같다면 답에 푸쉬하기
+    if (accu === k) {
+      answer.push([startI, i]);
+    }
   }
 
-  return answer;
+  let result = [];
+  let minLen = sequence.length;
+  if (answer.length === 1) return answer[0];
+  else {
+    // 합이 k인 부분 수열이 여러 개인 경우 길이가 짧은 수열을 찾기
+    answer.forEach(([startI, endI]) => {
+      const currLen = endI - startI;
+      if (minLen > currLen) {
+        minLen = currLen;
+        result = [startI, endI];
+      }
+    });
+    // 길이가 짧은 수열이 여러 개인 경우 앞쪽(시작 인덱스가 작은)에 나오는 수열을 찾기
+    // => 순서대로 담기므로 이건 따로 로직을 구성할 필요 없다
+  }
+
+  return result;
 };
 
 test('run', () => {
