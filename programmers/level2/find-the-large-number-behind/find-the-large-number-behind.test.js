@@ -7,14 +7,16 @@
 
 const solution = (numbers) => {
   const answer = [];
-  let i = 0;
 
-  while (i < numbers.length) {
+  for (let i = 0; i < numbers.length; i++) {
+    let j = i + 1;
+
     if (i === numbers.length - 1) {
+      // 마지막 요소면 -1을 담는다
       answer.push(-1);
     }
 
-    for (let j = i + 1; j < numbers.length; j++) {
+    while (j < numbers.length) {
       if (numbers[i] < numbers[j]) {
         // 현재 인덱스보다 크다
         // 현재 요소보다 크다
@@ -25,8 +27,8 @@ const solution = (numbers) => {
         // 위 조건을 만족하지 않으면 -1을 담는다
         answer.push(-1);
       }
+      j++;
     }
-    i++;
   }
 
   return answer;
