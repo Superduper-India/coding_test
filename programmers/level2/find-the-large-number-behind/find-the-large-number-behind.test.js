@@ -3,32 +3,30 @@
 
 // 조건
 // 큰 수의 조건은 다음과 같다.
-// 1. 현재 인덱스보다 크고, 현재 요소보다 크면서 인덱스의 차가 가장 작은 수
+// 현재 인덱스보다 크고, 현재 요소보다 크면서 인덱스의 차가 가장 작은 수
 
 const solution = (numbers) => {
-  const answer = [];
+  // 값이 정해지지 않은 것을 고려, 요소가 모두 -1인 배열 answer
+  const answer = new Array(numbers.length).fill(-1);
 
+  // 아직 값이 정해지지 않은 인덱스를 담아낼 targetIdxs
+  const targetIdxs = [];
+
+  // 반복문으로 numbers의 요소를 순회하면서
+  // 마지막에는 i인덱스를 스택에 푸쉬
   for (let i = 0; i < numbers.length; i++) {
-    let j = i + 1;
+    // console.log('targetIdxs:', targetIdxs);
 
-    if (i === numbers.length - 1) {
-      // 마지막 요소면 -1을 담는다
-      answer.push(-1);
+    // 인덱스가 있고, 현재 요소가 비교 인덱스의 요소보다 크다면,
+    while (targetIdxs.length && numbers[targetIdxs[targetIdxs.length - 1]] < numbers[i]) {
+      // console.log('타겟 인덱스의 요소:', numbers[targetIdxs[targetIdxs.length - 1]], '현재 요소:', numbers[i]);
+      // 정답 배열의 비교 인덱스의 요소는 현재 요소이다
+      answer[targetIdxs.pop()] = numbers[i];
+      // console.log('answer:', answer);
     }
 
-    while (j < numbers.length) {
-      if (numbers[i] < numbers[j]) {
-        // 현재 인덱스보다 크다
-        // 현재 요소보다 크다
-        // 인덱스의 차가 가장 작다
-        answer.push(numbers[j]);
-        break;
-      } else if (j === numbers.length - 1) {
-        // 위 조건을 만족하지 않으면 -1을 담는다
-        answer.push(-1);
-      }
-      j++;
-    }
+    // 비교 인덱스를 넣어준다
+    targetIdxs.push(i);
   }
 
   return answer;
