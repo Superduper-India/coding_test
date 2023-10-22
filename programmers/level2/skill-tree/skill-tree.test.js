@@ -12,25 +12,35 @@ const solution = (skill, skill_trees) => {
 
   // [...skill]과 skill_trees의 요소들의 인덱스를 비교한다
   skill_trees.forEach((target) => {
-    const targetArr = [];
-    // target이 c, b, d 중에 해당되는 것이 있으면, targetArr에 푸쉬
+    let targetArr = [];
     [...target].forEach((letter) => {
-      if ([...skill].includes(letter)) targetArr.push(letter);
+      // target이 c, b, d 중에 해당되는 것이 있으면, targetArr에 푸쉬
+      if ([...skill].includes(letter)) {
+        targetArr.push(letter);
+        if ([...skill].indexOf(letter) !== targetArr.indexOf(letter)) targetArr = [];
+        // console.log([...skill], targetArr, [...skill].indexOf(letter), targetArr.indexOf(letter));
+      }
+
+      // 각 첫번째 인덱스의 요소를 비교했을때 다르면 pop
+      // if ([...skill][0] !== targetArr[0]) targetArr.pop();
     });
 
-    let check = false;
+    if (targetArr.length > 0) answer++;
 
-    // 각 인덱스의 요소를 비교한다 하나라도 다르면 break, 그게 아니면 answer++;
-    for (let i = 0; i < targetArr.length; i++) {
-      if (targetArr.indexOf([...skill][i]) !== i) {
-        break;
-      }
-      check = true;
-    }
+    // let check = false;
 
-    if (check) answer++;
+    // // 각 인덱스의 요소를 비교한다 하나라도 다르면 break, 그게 아니면 answer++;
+    // for (let i = 0; i < targetArr.length; i++) {
+    //   if (targetArr.indexOf([...skill][i]) !== i) {
+    //     break;
+    //   }
+    //   check = true;
+    // }
 
-    console.log('얘네의 순서를 비교한다', [...skill], targetArr, check);
+    // if (check) answer++;
+
+    // endIndex - startIndex가 같은지 비교한다.
+    // console.log('얘네의 순서를 비교한다', [...skill], targetArr, check);
   });
 
   return answer;
