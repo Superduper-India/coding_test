@@ -16,7 +16,7 @@ const solution = (maps) => {
   // maps의 행열 길이를 가지는 자료구조
   const visited = Array.from({ length: row }, () => Array(column).fill(0));
   // 현재 위치에서 상하좌우
-  const around = [
+  const move = [
     [0, 1],
     [0, -1],
     [1, 0],
@@ -36,7 +36,26 @@ const solution = (maps) => {
     while (queue.length) {
       // 큐의 선입선출로 행열 확인
       const [row, column] = queue.shift();
+      // 현재 위치에서 상하좌우를 확인
+      for (let i = 0; i < 4; i++) {
+        // 상하좌우의 행
+        const mr = row + move[i][0];
+        // 상하좌우의 열
+        const mc = column + move[i][1];
+        // console.log(row, column, ':', mr, mc, maps[mr][mc]);
+
+        // 제한구간을 넘지않고, 방문한 적이 없으며, X인 땅이 아니라면 방문을 확인하고 확인한 위치의 숫자를 더해준다. 그리고 큐에 확인한 위치를 넣어준다
+        if (mr >= 0 && mc >= 0 && !visited[mr][mc] && maps[mr][mc] !== 'X') {
+          // console.log(row, column, ':', mr, mc, maps[mr][mc]);
+
+          visited[mr][mc] = 1;
+          count += parseInt(maps[mr][mc]);
+          // 큐에 확인한 위치를 넣어준다 (???)
+          queue.push([mr, mc]);
+        }
+      }
     }
+    result.push(count);
   };
 
   for (let i = 0; i < row; i++) {
@@ -45,6 +64,8 @@ const solution = (maps) => {
       if (!visited[i][j] && maps[i][j] !== 'X') bfs(i, j);
     }
   }
+
+  console.log(result);
 };
 
 test('run', () => {
