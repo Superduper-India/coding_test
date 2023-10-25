@@ -6,7 +6,7 @@
 
 // 계획
 // 현재 위치를 큐에 넣어준다. 현재 위치의 숫자를 더해주고, 방문처리를 한다.
-// 현재 위치에서 상하좌우를 확인, 제한구간을 넘지않고, 방문한 적이 없으며, X인 땅이 아니라면 방문을 확인하고 확인한 위치의 숫자를 더해준다.
+// 현재 위치에서 상하좌우를 확인, 제한구간을 넘지않고, 방문한 적이 없으며, X인 땅이 아니라면 방문처리하고 확인한 위치의 숫자를 더해준다.
 // 그리고 큐에 확인한 위치를 넣어준다.
 // 큐가 비어서 반복이 종료된다면, 지금까지 더해진 수를 결과 배열에 넣어준다.
 
@@ -35,18 +35,20 @@ const solution = (maps) => {
     // 큐가 비면 반복문 멈춘다
     while (queue.length) {
       // 큐의 선입선출로 행열 확인
-      const [row, column] = queue.shift();
+      const [r, c] = queue.shift();
+      // console.log('row:', r, 'column:', c);
+
       // 현재 위치에서 상하좌우를 확인
       for (let i = 0; i < 4; i++) {
         // 상하좌우의 행
-        const mr = row + move[i][0];
+        const mr = r + move[i][0];
         // 상하좌우의 열
-        const mc = column + move[i][1];
-        // console.log(row, column, ':', mr, mc, maps[mr][mc]);
+        const mc = c + move[i][1];
+        // console.log('mr:', mr, 'mc:', mc, maps[mr][mc]);
 
-        // 제한구간을 넘지않고, 방문한 적이 없으며, X인 땅이 아니라면 방문을 확인하고 확인한 위치의 숫자를 더해준다. 그리고 큐에 확인한 위치를 넣어준다
-        if (mr >= 0 && mc >= 0 && !visited[mr][mc] && maps[mr][mc] !== 'X') {
-          // console.log(row, column, ':', mr, mc, maps[mr][mc]);
+        // 제한구간을 넘지않고, 방문한 적이 없으며, X인 땅이 아니라면 방문처리하고 확인한 위치의 숫자를 더해준다. 그리고 큐에 확인한 위치를 넣어준다
+        if (mr >= 0 && mc >= 0 && mr < row && mc < column && !visited[mr][mc] && maps[mr][mc] !== 'X') {
+          // console.log('mr:', mr, 'mc:', mc, maps[mr][mc]);
 
           visited[mr][mc] = 1;
           count += parseInt(maps[mr][mc]);
@@ -66,9 +68,12 @@ const solution = (maps) => {
   }
 
   console.log(result);
+
+  if (result.length === 0) return [-1];
+  return result.sort((a, b) => a - b);
 };
 
 test('run', () => {
-  expect(solution(['X591X', 'X1X5X', 'X231X', '1XXX1'])).toBe([1, 1, 27]);
-  expect(solution(['XXX', 'XXX', 'XXX'])).toBe([-1]);
+  expect(solution(['X591X', 'X1X5X', 'X231X', '1XXX1'])).toStrictEqual([1, 1, 27]);
+  expect(solution(['XXX', 'XXX', 'XXX'])).toStrictEqual([-1]);
 });
