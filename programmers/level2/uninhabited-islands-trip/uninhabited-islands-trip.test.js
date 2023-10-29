@@ -47,7 +47,7 @@ const solution = (maps) => {
         // console.log('mr:', mr, 'mc:', mc, maps[mr][mc]);
 
         // 제한구간을 넘지않고, 방문한 적이 없으며, X인 땅이 아니라면 방문처리하고 확인한 위치의 숫자를 더해준다. 그리고 큐에 확인한 위치를 넣어준다
-        if (mr >= 0 && mc >= 0 && mr < row && mc < column && !visited[mr][mc] && maps[mr][mc] !== 'X') {
+        if (mr >= 0 && mc >= 0 && mr < r && mc < c && !visited[mr][mc] && maps[mr][mc] !== 'X') {
           // console.log('mr:', mr, 'mc:', mc, maps[mr][mc]);
 
           visited[mr][mc] = 1;
@@ -67,7 +67,7 @@ const solution = (maps) => {
     }
   }
 
-  console.log(result);
+  // console.log(result);
 
   if (result.length === 0) return [-1];
   return result.sort((a, b) => a - b);
