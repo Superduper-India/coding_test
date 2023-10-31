@@ -5,37 +5,33 @@
 // 코스요리 메뉴는 최소 2가지 이상의 단품메뉴로 구성
 // 최소 2명 이상의 손님으로부터 주문된 단품메뉴 조합에 대해서만 코스요리 메뉴 후보에 포함
 
-// course와 order의 길이가 동일한지 확인
-const checkLength = (orderLen, course) => {
-  if (course.includes(orderLen)) return true;
-  else return false;
+// 계획
+// 조합으로 풀기
+
+// orders에 들어오는 문자열을 course의 수 만큼 뽑아서 조합을 만든다
+const combination = (menuArr, num) => {
+  const result = [];
+  if (num === 1) return menuArr.map((el) => [el]);
+
+  menuArr.forEach((currEl, idx, arr) => {
+    // 현재 요소를 제외한 배열
+    const restArr = arr.slice(idx + 1);
+    const combiArr = combination(restArr, num - 1);
+    const combiFix = combiArr.map((el) => [currEl, ...el]);
+
+    result.push(...combiFix);
+  });
+
+  return result;
 };
 
 const solution = (orders, course) => {
-  const answer = [];
-
-  // order의 길이 오름차순 순으로 orders정렬
-  orders.sort((a, b) => a.length - b.length);
-
-  // console.log(orders);
-
-  // course와 order의 길이가 동일해야한다
-  orders.forEach((order, index) => {
-    if (checkLength(order.length, course)) {
-      // 동일하다면, check++ 해당 요소를 다른 요소들이 포함하고 있는지 검증하여 check++, check가 2이상이여야 answer에 해당 요소를 push한다
-      // console.log('target:', [...order]);
-      for (let i = index + 1; i < orders.length; i++) {
-        [...orders[i]].forEach((letter) => {
-          if ([...order].includes(letter)) {
-            answer.push(order);
-          }
-        });
-        // console.log(orders[i]);
-      }
-    }
+  course.map((num) => {
+    orders.forEach((menu) => {
+      combination([...menu], num);
+      console.log(combination([...menu], num));
+    });
   });
-
-  return [...new Set(answer)];
 };
 
 test('run', () => {
