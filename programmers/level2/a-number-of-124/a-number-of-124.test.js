@@ -14,24 +14,28 @@ const solution = (n) => {
   // n=1 => n%3=1, n=2 => n%3=2, n=3 => n%3=0
   const nums = [4, 1, 2];
 
-  // 6 9 12
-  // 1 2 3 ...
+  // n=4 => n=1, n%3=1
+  // n=5 => n=1, n%3=1
+  // n=7 => n=2, n%3=2
+  // n=10 => n=3, n%3=0
 
   while (n) {
     answer = nums[n % 3] + answer;
-    n = n % 3 === 0 && n / 3 - 1;
+    n = n % 3 === 0 ? n / 3 - 1 : Math.floor(n / 3);
   }
 
   return answer;
 };
 
 test('run', () => {
-  // expect(solution(1)).toBe('1');
-  // expect(solution(2)).toBe('2');
-  // expect(solution(3)).toBe('4');
-  // expect(solution(4)).toBe('11');
-  // expect(solution(5)).toBe('12');
+  expect(solution(1)).toBe('1');
+  expect(solution(2)).toBe('2');
+  expect(solution(3)).toBe('4');
+  expect(solution(4)).toBe('11');
+  expect(solution(5)).toBe('12');
   expect(solution(6)).toBe('14');
+  expect(solution(7)).toBe('21');
   expect(solution(9)).toBe('24');
+  expect(solution(10)).toBe('41');
   expect(solution(12)).toBe('44');
 });
