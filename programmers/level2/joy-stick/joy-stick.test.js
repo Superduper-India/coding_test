@@ -18,19 +18,25 @@ const solution = (name) => {
   let upAndDown = 0;
   // 좌우로 이동시 최소 조작횟수
   let leftAndRight = name.length - 1;
+  let nextIdx = 0;
 
   [...name].forEach((char, i) => {
     upAndDown = upAndDown + charToCode(char);
+    nextIdx = i + 1;
 
-    // 좌우로 이동시 A를 만나면 조이스틱을 조작하지 않는게 낫다.
-    // 현재 인덱스의 다음이 A면 돌아가야함
+    // 좌우로 이동시 다음 알파벳이 A를 만나면 돌아가는경우
+    if (name.charAt(nextIdx) === 'A') {
+      nextIdx++;
+    }
+
+    leftAndRight = Math.min(leftAndRight, i * 2 + (name.length - nextIdx));
   });
 
   return upAndDown + leftAndRight;
 };
 
 test('run', () => {
-  // expect(solution('JEROEN')).toBe(56);
-  // expect(solution('JAN')).toBe(23);
-  expect(solution('BBBAABB')).toBe(0);
+  expect(solution('JEROEN')).toBe(56);
+  expect(solution('JAN')).toBe(23);
+  // expect(solution('BBBAABB')).toBe(0);
 });
