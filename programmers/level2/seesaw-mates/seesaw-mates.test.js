@@ -1,35 +1,34 @@
+// 1. 원하는 것
+// 사람들의 몸무게 목록 weights이 주어질 때, 시소 짝꿍이 몇 쌍 존재하는지 구하여 return 하도록 solution 함수를 완성
+
+// 2. 조건
+// - 시소가 평형인 상태에서 각각에 의해 시소에 걸리는 토크의 크기가 서로 상쇄되어 완전한 균형을 이룰 수 있다면 그 두 사람을 시소 짝꿍
+// - 즉, (탑승한 사람의 무게 * 좌석 간의 거리)가 같다면 => 시소 짝꿍
+// - 이 시소는 중심으로부터 2(m), 3(m), 4(m) 거리의 지점에 좌석이 하나씩 있다
+
 const solution = (weights) => {
-  let count = 0;
-  const store = {}; // key-value의 형태로 여기에 저장한다.
-  // 경우의 수 => 1, 1.5, 2, 1.33...
-  const cases = [1, 3 / 2, 4 / 2, 4 / 3];
-
-  // weights배열을 내림차순으로 정렬하고 반복문으로 돌리기
-  weights
-    .sort((a, b) => b - a)
-    .forEach((w) => {
-      let key;
-      cases.forEach((c) => {
-        key = w * c; // 현재 무게와 경우의 수의 비율을 곱한 값
-        console.log(">>>key", key);
-        console.log(">>>store", store);
-        // 위의 값이 store객체에 존재하는 경우
-        if (store[key]) {
-          count += store[key];
-        }
-      });
-      // store객체에 100, 180, 360, 100, 270 값들을 key값으로 가지고 있지 않은경우,
-      if (!store[w]) store[w] = 1;
-      // store객체에 100, 180... 이하 생략 값들을 key값으로 가지고 있는 경우,
-      else store[w]++;
-
-      // store { '100': 2, '180': 1, '270': 1, '360': 1 }
-      // console.log("store", store);
-    });
-
-  console.log(count);
+  // weights.sort();
+  // let count = 0;
+  // weights.forEach((w, index) => {
+  //   // 왼쪽 사소를 차례로 구하는중
+  //   let i = 2;
+  //   let targetLeft = w * i;
+  //   while (i <= 4) {
+  //     console.log(targetLeft);
+  //     // targetLeft의 비교 대상이 될 배열
+  //     const compareWeights = weights.filter((_, i) => i !== index);
+  //     compareWeights.forEach((cw) => {
+  //       if (cw * 2 === targetLeft || cw * 3 === targetLeft || cw * 4 === targetLeft) count++;
+  //     });
+  //     console.log(compareWeights);
+  //     i++;
+  //     targetLeft = w * i;
+  //   }
+  //   console.log('한턴 끝');
+  // });
+  // console.log(count);
 };
 
-test("run", () => {
+test('run', () => {
   expect(solution([100, 180, 360, 100, 270])).toBe(4);
 });
