@@ -7,26 +7,35 @@
 // - 이 시소는 중심으로부터 2(m), 3(m), 4(m) 거리의 지점에 좌석이 하나씩 있다
 
 const solution = (weights) => {
-  // weights.sort();
-  // let count = 0;
-  // weights.forEach((w, index) => {
-  //   // 왼쪽 사소를 차례로 구하는중
-  //   let i = 2;
-  //   let targetLeft = w * i;
-  //   while (i <= 4) {
-  //     console.log(targetLeft);
-  //     // targetLeft의 비교 대상이 될 배열
-  //     const compareWeights = weights.filter((_, i) => i !== index);
-  //     compareWeights.forEach((cw) => {
-  //       if (cw * 2 === targetLeft || cw * 3 === targetLeft || cw * 4 === targetLeft) count++;
-  //     });
-  //     console.log(compareWeights);
-  //     i++;
-  //     targetLeft = w * i;
-  //   }
-  //   console.log('한턴 끝');
-  // });
-  // console.log(count);
+  let count = 0;
+  const map = new Map();
+  // 가능한 비율 경우의 수
+  const ratio = [1, 3 / 2, 2, 4 / 3];
+
+  // 내림차순 정렬 왜지??
+  weights
+    .sort((a, b) => b - a)
+    .forEach((w) => {
+      console.log('사람 몸무게', w);
+
+      // 하나의 몸무게에 대한 가능한 모든 비율을 적용하여 짝궁을 찾는다
+      ratio.forEach((r) => {
+        console.log('적용가능한 비율', r);
+        console.log('몸무게 * 비율', w * r);
+
+        // 아래 로직의 이유는?
+        if (map.has(w * r)) {
+          // console.log('짝꿍을 찾았다!');
+          count += map.get(w * r);
+        }
+      });
+
+      // 중복 값 카운트
+      map.set(w, (map.get(w) || 0) + 1);
+    });
+
+  console.log(count);
+  return count;
 };
 
 test('run', () => {
