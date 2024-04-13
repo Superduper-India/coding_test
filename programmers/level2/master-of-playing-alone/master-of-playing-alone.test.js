@@ -9,35 +9,44 @@
 
 // 1번 상자 그룹의 상자 수와 2번 상자 그룹의 상자 수를 곱한 값이 게임의 점수이다.
 
-const solution = (cards) => {
-  // 1번부터 여는것부터 시작해서 각 경우의 수를 모두 구한다.
+// 카드 하나씩 확인하는 함수
+const checkCards = (targetCards, prevBox) => {
+  const box = [];
+  const check = targetCards
+    .map((num) => {
+      if (!prevBox.includes(num)) return num;
+    })
+    .findIndex((item) => item === undefined);
+  let index = check === -1 ? 0 : check;
 
-  // 박스가 열렸는지 유무를 판단한다.
-  const openedBoxs = Array.from({ length: cards.length }).fill(false);
-  const result = [];
-
-  for (let i = 0; i < cards.length; i++) {
-    let idx = i;
-    let count = 0;
-    while (true) {
-      if (!openedBoxs[idx]) {
-        // 지금 상자가 안열렸으면,
-        // 열림 표시
-        openedBoxs[idx] = true;
-        // 다음 인덱스 지정
-        idx = cards[idx] - 1;
-        count++;
-      } else {
-        // 지금 상자가 열렸으면,
-        result.push(count);
-        break;
-      }
-    }
+  while (!box.includes(targetCards[index])) {
+    box.push(targetCards[index]);
+    index = targetCards[index] - 1;
   }
 
-  const sortResult = result.filter((v) => v !== 0).sort((a, b) => b - a);
+  return box;
+};
 
-  return sortResult.length > 1 ? sortResult[0] * sortResult[1] : 0;
+const solution = (cards) => {
+  let answer = 1;
+  const results = [];
+  let remainingBox = cards;
+  let isLeftCards = true;
+
+  while (isLeftCards) {
+    const resultBox = checkCards(cards, remainingBox); // 현재 뽑은 카드의 결과
+    results.push(resultBox.length); // 현재 뽑은 카드의 개수를 기록
+
+    // 여기서 부터 다음턴 진행 여부 판단을 위해 남은 카드 확인
+    remainingBox = [...remainingBox.filter((num) => !resultBox.includes(num))];
+    isLeftCards = remainingBox.length ? true : false;
+  }
+
+  results.forEach((num) => {
+    answer *= num;
+  });
+
+  return answer;
 };
 
 test('run', () => {
