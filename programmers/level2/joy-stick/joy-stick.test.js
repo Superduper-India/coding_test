@@ -12,7 +12,8 @@ const table = {
   'Z': 'Z'.charCodeAt() + 1 // Z에 조이스틱이 위치하게 하려면 1번 조작해야한다
 }
 
-const getMinCharCode = (targetCharCode) => {
+const getMinCharCode = (char) => {
+  const targetCharCode = char.charCodeAt()
   const BottomUp = table['Z'] - targetCharCode // Z에서 현재 문자열의 코드를 뺀 숫자
   const TopDown = targetCharCode - table['A'] // 현재 문자열의 코드에서 A를 뺀 숫자
 
@@ -20,21 +21,25 @@ const getMinCharCode = (targetCharCode) => {
 }
 
 const solution = (name) => {
-  let answer = 0
-  let currIdx = 0
   // 좌우로 움직일때의 최솟값을 구해서 정답에 더한다
-  const leftToRight = name.length - 1
-  const rightToLeft = (name.length - 1) - name.lastIndexOf('A')
+  let leastMoveCount = name.length - 1
+  let nextIdx = 0
 
-  while (currIdx <= name.length - 1) {
-    const currCharCode = name[currIdx].charCodeAt()
-    answer += getMinCharCode(currCharCode) // 상하로 움직일때의 최솟값을 구해서 정답에 더한다
-    currIdx++ // 다음 idx값
-  }
+  const totalCount = [...name].reduce((acc, currChar, idx) => {
+    nextIdx = idx + 1;
 
-  answer += Math.min(leftToRight, rightToLeft)
+    while (nextIdx < name.length && name.charAt(nextIdx) === 'A') nextIdx++
 
-  return answer
+    leastMoveCount = Math.min(
+      leastMoveCount,
+      2 * idx + (name.length - nextIdx),
+      idx + (name.length - nextIdx) * 2
+    )
+
+    return acc + getMinCharCode(currChar)
+  }, 0)
+
+  return totalCount + leastMoveCount
 };
 
 test('run', () => {
