@@ -10,30 +10,28 @@
 // 1번 상자 그룹의 상자 수와 2번 상자 그룹의 상자 수를 곱한 값이 게임의 점수이다.
 
 const solution = (cards) => {
-  // 상자를 열었는지 유무를 판단하는 배열을 따로 만든다
-  const checkToOpenBox = Array.from({ length: cards.length }).fill(false)
+  const answer = []
 
-  let isNotOver = checkToOpenBox.filter(box => !box).length > 0 // 게임진행유무
-  let currIdx = checkToOpenBox.findIndex(box => !box) // checkToOpenBox에서 false인 값중 가장 작은 인덱스를 구해야함
+  cards.forEach((_, i) => {
+    let idx = i;
+    let count = 0;
 
-  let count = 0
-  let answer = 0
-
-  while (isNotOver) {
-    while (!checkToOpenBox[currIdx]) {
-      // cards 상자를 열고, 이때마다 checkToOpenBox에 해당하는 것을 true로 변경한다
-      checkToOpenBox[currIdx] = true // 상자 열림 체크
-      count++ // 상자를 여는데 성공
-      currIdx = cards[currIdx] - 1 // 다음 상자를 열기 위해 현재 인덱스 업데이트
+    while (true) {
+      if (cards[idx]) { // 아직 안열어본 상자의 경우,
+        const temp = cards[idx]
+        cards[idx] = 0; // 상자 열었음을 표시
+        idx = temp - 1; // index를 다음에 열 상자의 인덱스값으로 업데이트
+        count++ // 상자를 열어본 수 카운트
+      } else { // 열어본 상자인 경우,
+        answer.push(count);
+        break
+      }
     }
-    isNotOver = checkToOpenBox.filter(box => !box).length > 0 // 게임진행유무
-    currIdx = checkToOpenBox.findIndex(box => !box) // checkToOpenBox에서 false인 값중 가장 작은 인덱스를 구해야함
+  })
 
-    answer = !answer ? count : answer * count
-    count = 0
-  }
+  const sortedAnswer = answer.filter(v => v !== 0).sort((a, b) => b - a)
 
-  return answer
+  return sortedAnswer.length > 1 ? sortedAnswer[0] * sortedAnswer[1] : 0;
 };
 
 test('run', () => {
