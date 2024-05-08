@@ -9,44 +9,31 @@
 
 // 1번 상자 그룹의 상자 수와 2번 상자 그룹의 상자 수를 곱한 값이 게임의 점수이다.
 
-// 카드 하나씩 확인하는 함수
-const checkCards = (targetCards, prevBox) => {
-  const box = [];
-  const check = targetCards
-    .map((num) => {
-      if (!prevBox.includes(num)) return num;
-    })
-    .findIndex((item) => item === undefined);
-  let index = check === -1 ? 0 : check;
-
-  while (!box.includes(targetCards[index])) {
-    box.push(targetCards[index]);
-    index = targetCards[index] - 1;
-  }
-
-  return box;
-};
-
 const solution = (cards) => {
-  let answer = 1;
-  const results = [];
-  let remainingBox = cards;
-  let isLeftCards = true;
+  // 상자를 열었는지 유무를 판단하는 배열을 따로 만든다
+  const checkToOpenBox = Array.from({ length: cards.length }).fill(false)
 
-  while (isLeftCards) {
-    const resultBox = checkCards(cards, remainingBox); // 현재 뽑은 카드의 결과
-    results.push(resultBox.length); // 현재 뽑은 카드의 개수를 기록
+  let isNotOver = checkToOpenBox.filter(box => !box).length > 0 // 게임진행유무
+  let currIdx = checkToOpenBox.findIndex(box => !box) // checkToOpenBox에서 false인 값중 가장 작은 인덱스를 구해야함
 
-    // 여기서 부터 다음턴 진행 여부 판단을 위해 남은 카드 확인
-    remainingBox = [...remainingBox.filter((num) => !resultBox.includes(num))];
-    isLeftCards = remainingBox.length ? true : false;
+  let count = 0
+  let answer = 0
+
+  while (isNotOver) {
+    while (!checkToOpenBox[currIdx]) {
+      // cards 상자를 열고, 이때마다 checkToOpenBox에 해당하는 것을 true로 변경한다
+      checkToOpenBox[currIdx] = true // 상자 열림 체크
+      count++ // 상자를 여는데 성공
+      currIdx = cards[currIdx] - 1 // 다음 상자를 열기 위해 현재 인덱스 업데이트
+    }
+    isNotOver = checkToOpenBox.filter(box => !box).length > 0 // 게임진행유무
+    currIdx = checkToOpenBox.findIndex(box => !box) // checkToOpenBox에서 false인 값중 가장 작은 인덱스를 구해야함
+
+    answer = !answer ? count : answer * count
+    count = 0
   }
 
-  results.forEach((num) => {
-    answer *= num;
-  });
-
-  return answer;
+  return answer
 };
 
 test('run', () => {
