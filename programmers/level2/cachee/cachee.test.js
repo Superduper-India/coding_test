@@ -3,37 +3,33 @@
 
 // 조건
 // - 각 도시 이름은 공백, 숫자, 특수문자 등이 없는 영문자로 구성, 대소문자 구분을 하지 않고, 최대 20자로 이루어져 있다.
-// - 캐시 교체 알고리즘은 LRU을 사용, 즉 캐시에서 사용한지 가장 오래된 캐시를 지우는 알고리즘
+// - 캐시 교체 알고리즘은 LRU(Least Recently Used)을 사용, 즉 캐시에서 사용한지 가장 오래된 캐시를 지우는 알고리즘
 // - cache hit 일 경우 캐시안에 현재 값이 들어있기 때문에 +1
 // - cache miss 일 경우 캐시안에 현재 값이 없기 때문에 +5
 
+const checkCacheHit = (currCache, cityName) => {
+  // 현재 캐시배열에 도시이름이 있는지 확인하고 hit이면 1, miss면 5를 리턴하는 함수
+  return currCache.includes(cityName) ? 1 : 5
+}
+
 const solution = (cacheSize, cities) => {
-  let cache = [];
-  let answer = 0;
-  // cacheSize가 0인 경우 예외처리
-  // cache.length와 cacheSize가 계속 같은 경우이므로,
-  if (cacheSize === 0) return cities.length * 5;
+  const cache = []
+  let count = 0
 
-  // 1. cities의 맨 앞 요소부터 cache배열안에 있는지 확인한다.
-  cities.forEach((city) => {
-    const temp = city.toLowerCase();
+  cities.forEach(cityName => {
+    const target = cityName.toLowerCase()
+    const result = checkCacheHit(cache, target)
 
-    if (cache.includes(temp)) {
-      // y => cache배열에서 요소값을 지워주고, 맨 뒤에 요소를 push해준다. (이렇게 해주는 이유는 캐시가 사용되면 가장 최근에 사용한 값이 되므로 맨 뒤에 넣어주기 위해서이다.) answer+=1
-      cache.splice(cache.indexOf(temp), 1);
-      cache.push(temp);
-      answer += 1;
-    } else {
-      // n => cache배열에서 맨 앞의 값을 shift()하고 맨 뒤에 city값을 push해준다. answer +=5
-      if (cache.length === cacheSize) {
-        cache.shift();
-      }
-      cache.push(temp);
-      answer += 5;
+    const status = result === 1 ? 'hit' : 'miss'
+    if (status === 'miss' && cache.length < cacheSize) cache.unshift(target)
+    else {
+      cache.pop()
+      cache.unshift(target)
     }
-  });
+    count += result
+  })
 
-  return answer;
+  return count
 };
 
 test('run', () => {
