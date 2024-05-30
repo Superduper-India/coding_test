@@ -10,28 +10,21 @@
 // 1번 상자 그룹의 상자 수와 2번 상자 그룹의 상자 수를 곱한 값이 게임의 점수이다.
 
 const solution = (cards) => {
-  const answer = []
+  const recordOfResult = [] // 각 게임의 결과를 기록하는 용도
+  const copyOfCards = [...cards]
+  let i = 0
+  let count = 0
 
-  cards.forEach((_, i) => {
-    let idx = i;
-    let count = 0;
-
-    while (true) {
-      if (cards[idx]) { // 아직 안열어본 상자의 경우,
-        const temp = cards[idx]
-        cards[idx] = 0; // 상자 열었음을 표시
-        idx = temp - 1; // index를 다음에 열 상자의 인덱스값으로 업데이트
-        count++ // 상자를 열어본 수 카운트
-      } else { // 열어본 상자인 경우,
-        answer.push(count);
-        break
-      }
+  while (true) {
+    if (!copyOfCards[i]) {
+      recordOfResult.push(count)
+      break
+    } else {
+      copyOfCards[i] = -1 // 카드 연거 표시
+      i = cards[i] - 1 // 다음 열 카드
+      count++ // 연 상자수 카운트
     }
-  })
-
-  const sortedAnswer = answer.filter(v => v !== 0).sort((a, b) => b - a)
-
-  return sortedAnswer.length > 1 ? sortedAnswer[0] * sortedAnswer[1] : 0;
+  }
 };
 
 test('run', () => {
