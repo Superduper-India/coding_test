@@ -11,28 +11,25 @@
 
 const solution = (cards) => {
   const recordOfResult = [] // 각 게임의 결과를 기록하는 용도
-  const copyOfCards = [...cards]
-  let answer = 0
 
-  while (true) {
-    const resetIndex = copyOfCards.findIndex(element => element !== false)
-    let i = resetIndex
+  cards.forEach((_, index) => {
     let count = 0
-    while (copyOfCards[i] !== false) { // 열어야 하는 상자가 이미 열려있을 때까지 반복
-      count++
-      copyOfCards[i] = false
-      i = cards[i] - 1
-      // 한 라운드가 끝나면 recordOfResult배열에 점수를 기록
-    }
-    recordOfResult.push(count)
-    if (!copyOfCards.filter(item => item).length) break
-  }
+    let i = index
 
-  recordOfResult.forEach(number => {
-    answer = answer ? answer * number : number
+    while (true) {
+      if (cards[i]) {
+        temp = cards[i]
+        cards[i] = 0
+        i = temp - 1
+        count++
+      } else {
+        recordOfResult.push(count)
+        break
+      }
+    }
   })
 
-  return answer
+  console.log(recordOfResult)
 };
 
 test('run', () => {
