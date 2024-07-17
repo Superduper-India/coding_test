@@ -7,29 +7,26 @@
 // - cache hit 일 경우 캐시안에 현재 값이 들어있기 때문에 +1
 // - cache miss 일 경우 캐시안에 현재 값이 없기 때문에 +5
 
-const checkCacheHit = (currCache, cityName) => {
-  // 현재 캐시배열에 도시이름이 있는지 확인하고 hit이면 1, miss면 5를 리턴하는 함수
-  return currCache.includes(cityName) ? 1 : 5
-}
-
 const solution = (cacheSize, cities) => {
+  let answer = 0
   const cache = []
-  let count = 0
 
-  cities.forEach(cityName => {
-    const target = cityName.toLowerCase()
-    const result = checkCacheHit(cache, target)
-
-    const status = result === 1 ? 'hit' : 'miss'
-    if (status === 'miss' && cache.length < cacheSize) cache.unshift(target)
-    else {
-      cache.pop()
-      cache.unshift(target)
+  cities.forEach(city => {
+    const targetCity = city.toLowerCase()
+    if (!cache.includes(targetCity)) {
+      // cache miss일 경우,
+      if (cache.length >= cacheSize) {
+        cache.shift() // 오래된 캐시를 지우기
+      }
+      cache.push(targetCity)
+      answer += 5
+    } else {
+      // cache hit일 경우,
+      answer += 1
     }
-    count += result
   })
 
-  return count
+  return answer
 };
 
 test('run', () => {
