@@ -11,21 +11,22 @@ const solution = (storey) => {
   let result = 0
 
   while (storey) {
+    console.log('storey:: ', storey)
     let currentDigit = storey % 10 // 현재 자리수
     let nextDigit = (storey / 10) % 10 // 다음 자리수
-    console.log(storey / 10, nextDigit)
 
     if (currentDigit > 5) { // 5보다 큰 경우
       result += 10 - currentDigit // 결과값에 반영
       storey += 10 // 다음 자리수 +1
-      // console.log('5보다 큰 경우', storey)
+      console.log('5보다 큰 경우', 'result:: ', result, 'currentDigit:: ', currentDigit)
     } else if (currentDigit === 5) { // 5와 같은 경우
       result += currentDigit // 결과값에 반영
-      storey += nextDigit >= 5 ? 10 : 0 // ?? 다음 자리수가 5보다 크면 +1
-      // console.log('5랑 같은 경우', storey)
+      storey += nextDigit >= 5 ? 10 : 0// 다음 자리수가 5보다 같거나 크면 다음 자리수 +1, 그게 아니면 그대로.
+      // 왜냐하면 예를 들어 255인 경우, 다음자리수가 6이 되면 4만 올라가면 되지만, 5가 되면 5를 올라가야하기 때문.
+      console.log('5랑 같은 경우', 'result:: ', result, 'currentDigit:: ', currentDigit)
     } else { // 5보다 작은 경우
       result += currentDigit
-      // console.log('5보다 작은 경우', result)
+      console.log('5보다 작은 경우', 'result:: ', result, 'currentDigit:: ', currentDigit)
     }
     storey = parseInt(storey / 10)  // 자리수를 변경하여 탐색
   }
@@ -35,5 +36,5 @@ const solution = (storey) => {
 
 test('run', () => {
   expect(solution(16)).toBe(6);
-  // expect(solution(2554)).toBe(16);
+  expect(solution(2554)).toBe(16);
 });
