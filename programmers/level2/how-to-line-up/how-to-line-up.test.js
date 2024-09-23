@@ -8,32 +8,39 @@
 // 경우의 수 중, 순열에 관련된 문제 같다.
 // 순열: 서로 다른 n개의 원소 중에서 r개를 중복 없이 골라 순서에 상관있게 나열하는 경우의 수 (nPr)
 // 순열의 공식: n! = n * (n-1) * (n-2) * ... * 1
-// [1,2,3]의 모든 순열을 구하려면 3! = 3 * 2 * 1 = 6 가지
+// [1,2,3]의 모든 순열을 구하려면 3! = 3 * 2 * 1 = 6가지
 
-const getPermutations = (list = [1, 2, 3]) => {
-  if (list.length === 0) return [[]];
-
-  const result = [];
-  list.forEach((ele, idx) => {
-    // idx를 제외하고 나머지 숫자의 배열을 만듦
-    const rest = list.slice(0, idx).concat(list.slice(idx + 1));
-    // toDo 여기서부터 이해가 필요
-    const restPermutations = getPermutations(rest);
-    restPermutations.forEach((permutation) => {
-      result.push([ele, ...permutation]);
-    });
-  });
-
-  return result;
+const factorial = (n) => {
+  let res = 1;
+  for (let i = 2; i <= n; i++) res *= i;
+  return res;
 };
 
+// 2! = 2 * 1 = 2가지 => 이것이 앞자리 숫자의 교체 주기
+// arr[인덱스 / factorial(n-1)] 현재 인덱스 배열의 맨 앞자리 수
 const solution = (n, k) => {
-  const arr = [];
-  for (let i = 1; i <= n; i++) {
-    arr.push(i);
+  const answer = [];
+
+  const arr = new Array(n).fill(1);
+  for (let i = 1; i < n; i++) arr[i] = arr[i - 1] + 1;
+
+  let nth = k - 1; // 인덱스와 일치를 위해 k-1로 초기화한다.
+
+  // toDo 여기서부터 이해 안감.
+  while (arr.length) {
+    if (nth === 0) {
+      answer.push(...arr);
+      break;
+    }
+    const fact = factorial(arr.length - 1); // 맨 앞자리수 교체 주기
+    const index = (nth / fact) >> 0; // nth번째의 맨 앞자리수 ???
+    nth = nth % fact;
+
+    answer.push(arr[index]);
+    arr.splice(index, 1); // 배열에서 index요소 1개를 제거
   }
-  if (k === 1) return arr; // 1번째 경우의 수라면, 순열 안구해도 된다.
-  return getPermutations(arr)[k - 1];
+
+  return answer;
 };
 
 test('run', () => {
