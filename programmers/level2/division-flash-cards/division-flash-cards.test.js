@@ -17,40 +17,18 @@ const getGcd = (a, b) => {
 };
 
 const solution = (arrayA, arrayB) => {
-  let resultGcd;
-  let answer;
+  let answer = 0;
+  let [gcdA, gcdB] = [arrayA[0], arrayB[0]];
 
   // case1. arrayA에 담긴 숫자들의 최대공약수를 구한다.
-  for (let i = 0; i < arrayA.length; i++) {
-    if (arrayA[i + 1] !== undefined) {
-      resultGcd = getGcd(arrayA[i], arrayA[i + 1]);
-    }
-
-    // => case1에서 구한 수로 arrayB의 모든 수를 나눌 수 없어야 한다.
-    if (arrayB[i] % resultGcd === 0) {
-      answer = 0;
-      break;
-    } else {
-      answer = resultGcd;
-    }
+  for (let i = 1; i < arrayA.length; i++) {
+    gcdA = getGcd(gcdA, arrayA[i]);
+    gcdB = getGcd(gcdB, arrayB[i]);
   }
 
-  if (answer > 0) return answer;
-
-  // case2. arrayB에 담긴 숫자들의 최대 공약수를 구한다.
-  for (let i = 0; i < arrayB.length; i++) {
-    if (arrayB[i + 1] !== undefined) {
-      resultGcd = getGcd(arrayB[i], arrayB[i + 1]);
-    }
-
-    // => case2에서 구한 수가 arrayA의 최대공약수가 되면 안된다.
-    if (arrayA[i] % resultGcd === 0) {
-      answer = 0;
-      break;
-    } else {
-      answer = resultGcd;
-    }
-  }
+  // => case1에서 구한 수로 arrayB의 모든 수를 나눌 수 없어야 한다.
+  if (arrayA.every((item) => item % gcdB !== 0)) answer = Math.max(answer, gcdB);
+  if (arrayB.every((item) => item % gcdA !== 0)) answer = Math.max(answer, gcdA);
 
   return answer;
 };
