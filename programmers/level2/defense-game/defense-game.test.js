@@ -4,43 +4,28 @@
 // 2. 조건
 // - 무적권을 사용하면 병사의 소모없이 한 라운드의 공격을 막을 수 있다.
 // - 무적권은 최대 k번 사용할 수 있다.
+// - 모든 라운드를 막을 수 있는 경우에는 enemy[i]의 길이를 리턴
+
+// 최대한 많은 라운드를 진행하려면 무적권을 모두 소모하고 남은 라운드의 적의 수를 최소로 만들어야 한다. k번째 라운드까지는 모두 무적권으로 막을 수 있지만 k+1번째 라운드부터 매번 지금까지의 모든 라운드 중 최소한의 적이 등장하는 라운드만을 골라서 무적권을 사용하지 않고 병사로 막는다면 최대한 많은 라운드를 진행할 수 있다.
 
 const solution = (n, k, enemy) => {
-  const answers = [];
-  if (k === enemy.length) return k; // 무적권의 개수가 공격의 개수와 같으면 그대로 리턴
+  let usedN = 0; // 무적권을 쓰지 않고 얼마나 처리했는지의 합
+  if (enemy.length === k) return enemy.length; // 모든 라운드를 막을 수 있는 경우
 
-  // n => 처음 가지고 있는 병사의 수
-  // k => 사용 가능한 무적권의 횟수
-  // enemy의 요소 => 매 라운드마다 공격해오는 적의 수
-
-  const rest = []; // k를 enemy의 요소로 나눠서 나머지의 경우의 수를 모두 구한다.
-  enemy.forEach((item) => {
-    rest.push(n % item);
-  });
-
-  let round = 0;
-
-  for (let i = 0; i < rest.length - 1; i++) {
-    const now = rest[i];
-    const next = rest[i + 1];
-    if (n < enemy[i] && !k) {
-      // console.log('현재: ', now, '다음: ', next, '현재 라운드: ', round, '남은 병사의 수: ', n, '남은 무적권의 수: ', k);
-      answers.push(round);
-      break;
-    } // 남은 병사의 수보다 현재 라운드의 적의 수가 더 많으면 게임 종료
-
-    if (now > next && k) {
-      // console.log('현재: ', now, '다음: ', next, '현재 라운드: ', round, '남은 병사의 수: ', n, '남은 무적권의 수: ', k);
-      k = k - 1; // 무적권 한 번 사용
-      round++; // 다음 라운드로,
-    } else {
-      // console.log('현재: ', now, '다음: ', next, '현재 라운드: ', round, '남은 병사의 수: ', n, '남은 무적권의 수: ', k);
-      n = n - enemy[i]; // 병사의 수가 줄어듬.
-      round++;
-    }
+  // 우선순위 큐를 이용한다.
+  const queue = enemy.slice(0, k); // 무적권을 사용해서 무조건 통과할 수 있는 최소 라운드
+  for (let i = k; i < enemy.length; i++) {
+    console.log('현재 라운드:: ', i);
+    queue.push(enemy[i]);
+    queue.sort((a, b) => b - a);
+    const min = queue.pop();
+    usedN += min;
+    console.log('지금까지 사용한 병사:: ', usedN);
+    console.log('전체 병사:: ', n);
+    if (usedN > n) return i;
   }
 
-  return answers[0];
+  return enemy.length; // for문을 다 돌았다면 모든 라운드를 진행할 수 있는 것이므로
 };
 
 test('run', () => {
