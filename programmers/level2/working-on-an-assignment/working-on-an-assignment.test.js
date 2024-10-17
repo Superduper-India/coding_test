@@ -7,58 +7,51 @@
 // 진행중이던 과제를 끝냈을 때, 잠시 멈춘 과제가 있으면 멈춰둔 과제를 이어서 진행한다.
 //  - 만약 과제를 끝낸 시각에 새로 시작해야 되는 과제와 잠시 멈춰둔 과제가 모두 있으면, 새로 시작해야 하는 과제부터 진행한다.
 
+// 문자열 시간을 분 숫자 기준으로 변경하기
+const getMin = (stringTime) => {
+  const [hour, min] = stringTime.split(':');
+  return Number(hour) * 60 + Number(min);
+};
+
 const solution = (plans) => {
   const answer = [];
-
-  // 과제 계획은 시작 시간순으로 정렬되어야 한다.
+  // 후입선출 스택을 이용해서 진행중이던 과제 마저 이어하기
+  const stack = [];
+  // 선입선출 큐를 이용해서 새로운 과제 진행하기
   const queue = plans
     .map((plan) => {
-      const [name, stringTime, spend] = plan;
-      const [hours, minutes] = stringTime.split(':').map(Number);
-      const timeToMin = hours * 60 + minutes;
-      return [name, timeToMin, Number(spend)];
+      const [name, time, spend] = plan;
+      const minTime = getMin(time);
+      return [name, minTime, Number(spend)];
     })
-    .sort((a, b) => a[1] - b[1]);
-
-  const firstPlan = queue.shift();
-  let currTime = firstPlan[1];
-  const stack = [firstPlan];
-
-  // console.log('queue:: ', queue, 'stack:: ', stack);
+    .sort((a, b) => a[1] - b[1]); // 오름차순 정렬
 
   while (queue.length) {
-    const target = queue.shift();
-    const [_name, time, _spend] = target;
-    let timeDiff = time - currTime; // 다음 과제 시작까지
-    currTime = time;
-    // console.log('target:: ', target, 'timeDiff:: ', timeDiff);
-
-    while (stack.length && timeDiff > 0) {
-      // 남은시간이 있고, 진행중인 과제가 있을때 반복
-      const latestPlan = stack.pop();
-      const [lName, _lTime, lSpend] = latestPlan;
-      if (lSpend <= timeDiff) {
-        // 소요시간이 남은시간보다 작거나 같을때
-        answer.push(lName);
-        timeDiff -= lSpend;
-        // console.log('과제 끝 answer:: ', answer, '남은 시간:: ', timeDiff);
-      } else {
-        // 소요시간이 남은시간보다 클때
-        latestPlan[2] = lSpend - timeDiff; // 소요시간 업데이트
-        timeDiff = 0;
-        stack.push(latestPlan); // 다시 저장
-        // console.log('과제 미루기 stack:: ', stack);
-      }
+    let [currName, currTime, currSpend] = queue.shift();
+    if (!queue.length) {
+      answer.push(currName);
+      break;
     }
+    const [nextName, nextTime, nextSpend] = queue[0];
+    let leftTime = currSpend - (nextTime - currTime);
 
-    stack.push(target);
-    // console.log('스택 업데이트:: ', stack);
+    if (leftTime > 0) {
+      // 남은 시간이 0보다 크면, (즉, 일이 아직 안끝났으면)
+      stack.push([currName, leftTime]);
+    } else if (leftTime < 0) {
+      // 과제를 끝내고 시간이 남으면,
+      answer.push(currName);
+      const [name, time] = stack.pop();
+      stack.push([name, time + leftTime]);
+    } else {
+      // 과제를 끝냈으면
+      answer.push(currName);
+    }
   }
 
   while (stack.length) {
     answer.push(stack.pop()[0]);
   }
-
   return answer;
 };
 
