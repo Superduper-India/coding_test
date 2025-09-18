@@ -1,31 +1,35 @@
 function solution(s) {
-  const bracketArr = [...s];
-  let openBracket = 0; // 열림 닫힘 괄호 쌍 체크용
-  let answer = true;
+  const bracket = '()';
 
-  //첫 번째 문자는 열림 괄호여야 함
-  if (bracketArr[0] != "(") answer = false;
+  let targetBracket = [];
+  let compareBracket = [];
 
-  bracketArr.map(bracket => {
-    if (bracket == "(") {
-      openBracket++;
-    } else if (openBracket >= 1 && bracket == ")") {
-      openBracket--;
-    }
+  let answer = false;
+
+  for (let i = 0; i < s.length; i++) {
+    const currentBracket = s[i % s.length];
+    if (!targetBracket.includes(currentBracket)) targetBracket.push(currentBracket);
+    else compareBracket.push(currentBracket);
+  }
+
+  // console.log(targetBracket, compareBracket, 0 % 2, 1 % 2, 2 % 2, 3 % 2);
+
+  targetBracket.forEach((char, i) => {
+    if (char === bracket[i % 2]) answer = true;
+    else answer = false;
   });
 
-  if (openBracket == 0) {
-    answer = true;
-  } else {
-    answer = false;
-  }
+  compareBracket.forEach((char, i) => {
+    if (char === bracket[i % 2]) answer = true;
+    else answer = false;
+  });
 
   return answer;
 }
 
-test("run", () => {
-  expect(solution("()()")).toBe(true);
-  expect(solution("(())()")).toBe(true);
-  expect(solution(")()(")).toBe(false);
-  expect(solution("(()(")).toBe(false);
+test('run', () => {
+  expect(solution('()()')).toBe(true);
+  expect(solution('(())()')).toBe(true);
+  expect(solution(')()(')).toBe(false);
+  expect(solution('(()(')).toBe(false);
 });
