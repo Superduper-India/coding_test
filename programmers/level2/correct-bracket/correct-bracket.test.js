@@ -1,30 +1,13 @@
 function solution(s) {
-  const bracket = '()';
-
-  let targetBracket = [];
-  let compareBracket = [];
-
-  let answer = false;
+  let count = 0;
 
   for (let i = 0; i < s.length; i++) {
-    const currentBracket = s[i % s.length];
-    if (!targetBracket.includes(currentBracket)) targetBracket.push(currentBracket);
-    else compareBracket.push(currentBracket);
+    s[i] === '(' ? (count += 1) : (count -= 1);
+
+    if (count < 0) break;
   }
 
-  // console.log(targetBracket, compareBracket, 0 % 2, 1 % 2, 2 % 2, 3 % 2);
-
-  targetBracket.forEach((char, i) => {
-    if (char === bracket[i % 2]) answer = true;
-    else answer = false;
-  });
-
-  compareBracket.forEach((char, i) => {
-    if (char === bracket[i % 2]) answer = true;
-    else answer = false;
-  });
-
-  return answer;
+  return count === 0 ? true : false;
 }
 
 test('run', () => {
