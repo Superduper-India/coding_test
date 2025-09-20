@@ -1,12 +1,12 @@
 const solution = (s) => {
-  let count = 0;
+  const stack = [];
 
-  for (let i = 0; i < s.length / 2; i++) {
-    // 다음요소랑 같으면(연속되면) 1, 그게 아니면 0
-    count = s[i - 1] === s[i] ? 1 : 0;
+  for (const char of s) {
+    if (stack[stack.length - 1] === char) stack.pop();
+    else stack.push(char);
   }
 
-  return count;
+  return stack.length > 0 ? 0 : 1;
 };
 
 test('run', () => {
