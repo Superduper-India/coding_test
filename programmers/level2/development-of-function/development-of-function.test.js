@@ -1,16 +1,18 @@
 function solution(progresses, speeds) {
   const answer = [0];
 
-  // 100에서 progresses[i]를 뺀 값을 speeds[i]로 나눈 값을 올림하여 남은 일수를 구한다.
-  const leftDays = progresses.map((progress, index) => Math.ceil((100 - progress) / speeds[index]));
+  const leftDays = progresses.map((progress, idx) => Math.ceil((100 - progress) / speeds[idx]));
 
-  let deployDay = leftDays[0];
+  let maxDay = leftDays[0];
 
   for (let i = 0, j = 0; i < leftDays.length; i++) {
-    if (deployDay >= leftDays[i]) {
+    if (leftDays[i] <= maxDay) {
+      // 현재 숫자가 같거나 작으면 1증가
       answer[j] += 1;
     } else {
-      deployDay = leftDays[i];
+      // 현재 숫자가 크면 maxDay를 갱신
+      maxDay = leftDays[i];
+      // 현재 숫자가 크면 answer 인덱스를 갱신
       answer[++j] = 1;
     }
   }
