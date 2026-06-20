@@ -1,11 +1,10 @@
-// 깊이 우선 탐색(순열)
-
 function solution(numbers, target) {
-  let count = 0;
+  let answer = 0;
 
-  function dfs(idx, sum) {
+  function dfs(idx = 0, sum = 0) {
+    // 마지막 인덱스일때,
     if (idx === numbers.length) {
-      if (sum === target) count++;
+      if (sum === target) answer++;
       return;
     }
 
@@ -13,9 +12,9 @@ function solution(numbers, target) {
     dfs(idx + 1, sum - numbers[idx]);
   }
 
-  dfs(0, 0);
+  dfs();
 
-  return count;
+  return answer;
 }
 
 test('solution', () => {
